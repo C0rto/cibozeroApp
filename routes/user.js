@@ -1,14 +1,12 @@
 const express = require('express');
-const user = require('../models/user');
+const User = require('../models/user');
 const router = express.Router();
 const catchAsync = require('../helpers/catchAsync');
-const User = require('../models/user');
 const passport = require('passport');
-
+//------------------------------------------------------------------------
 router.get('/registrati', (req, res) => {
   res.render('users/register');
 });
-
 router.post(
   '/registrati',
   catchAsync(async (req, res, next) => {
@@ -27,7 +25,7 @@ router.post(
     }
   })
 );
-
+//------------------------------------------------------------------------
 router.get('/login', (req, res) => {
   res.render('users/login');
 });
@@ -44,7 +42,7 @@ router.post(
     res.redirect(redirectUrl);
   }
 );
-
+//------------------------------------------------------------------------
 router.get('/logout', (req, res) => {
   req.logout();
   req.flash('success', 'Perfetto adesso sei scollegato');

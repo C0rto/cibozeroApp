@@ -11,4 +11,5 @@ const VendorSchema = new Schema({
   farm: [{ type: Schema.Types.ObjectId, ref: 'Farm' }],
 });
 VendorSchema.plugin(passportLocalMongoose);
+
 module.exports = mongoose.model('Vendor', VendorSchema);

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const Vendor = require('../models/vendor');
 const catchAsync = require('../helpers/catchAsync');
 const ExpressError = require('../helpers/ExpressError');
-const Farm = require('../models/farm');
 const { farmSchema } = require('../schemas/validateSchemas');
-const { isLoggedIn } = require('../middleware');
+const passport = require('passport');
 // -------------------------------------------------------
 const validateFarm = (req, res, next) => {
   const { error } = farmSchema.validate(req.body);
@@ -16,7 +16,6 @@ const validateFarm = (req, res, next) => {
   }
 };
 // ----------------------------------------------------------
-
 const country = [
   'Abruzzo',
   'Basilicata',
@@ -41,26 +40,33 @@ const country = [
 ];
 // ----------------------------------------------------------
 // Accesso ad info e modulo di registrazione per aziende
-router.get('/scopricibozero', (req, res) => {
+router.get('/entraincibozero', (req, res) => {
   res.render('cibozero');
 });
-// route di ragisrazione vednitore
 
-// Modulo di registrazione per aziende
-router.get('/registrazione', isLoggedIn, (req, res) => {
-  res.render('farms/new', { country });
+// route di ragisrazione venditore
+router.get('/nuova', (req, res) => {
+  res.render('vendor/register');
 });
-// Post della registrazione sulla pagina dei produttori
 router.post(
-  '/produttori',
-  validateFarm,
+  '/nuova',
   catchAsync(async (req, res, next) => {
-    const newFarm = new Farm(req.body);
-    await newFarm.save();
-    req.flash('success', 'Ti diamo ufficialmente il benvenuto su cibozero');
-    res.redirect('/produttori');
+    try {
+      const { username, email, password } = req.body;
+      const vendor = new Vendor({ email, username });
+      const newVendor = await Vendor.register(vendor, password);
+      req.login(newVendor, (e) => {
+        if (e) return next(e);
+        req.flash('success', 'Bentornato su Cibozero');
+        res.redirect('/produttori');
+      });
+    } catch (e) {
+      req.flash('error', e.message);
+      res.redirect('/produttori/registrazione/nuova');
+    }
   })
 );
+
 // -----------------------------------------------------------
 
 module.exports = router;

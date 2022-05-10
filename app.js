@@ -7,44 +7,32 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-
 // --------------------------------------------------
-
 const User = require('./models/user');
-
+const Vendor = require('./models/vendor');
 // ----------------------------------------------------------------
-
 const ExpressError = require('./helpers/ExpressError');
-
 // -----------------------------------------------------------------
-
 const farmRoute = require('./routes/farm');
 const productRoute = require('./routes/products');
 const reviewRoute = require('./routes/reviews');
 const userRoute = require('./routes/user');
 const vendorRoute = require('./routes/vendor');
-// --------------------------------------------------------
-
-mongoose.connect('mongodb://localhost:27017/cibozerodataprova');
+// DB MONGOOSE---------------------------------------------------------------------------------------
+mongoose.connect('mongodb://localhost:27017/123');
 const db = mongoose.connection;
 db.on('Error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
   console.log('Database Connected');
 });
-
-// -------------------------------------------------
-
+//ENGINE------------------------------------------------------------------------------------------------------
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// -------------------------------------------------
-
+// BODY PARSER--------------------------------------------------------------------------------
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
-
-// -------------------------------------------------
-
+//SESSION INITIALIZE --------------------------------------------------------------------------------
 const sessionConfig = {
   secret: 'I4mDumb',
   resave: false,
@@ -57,15 +45,16 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig));
 app.use(flash());
-// -------------------------------
-// PASSPORT SECTION passport ha bisogno di essere inizializzato, di inizializzare la sessione
+//PASSPORT SECTION ------------------------------------------------------------------------
 app.use(passport.initialize());
 app.use(passport.session());
 // questa è la strategia per usare passport sull'utente
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-// -------------------------------
+passport.use(new LocalStrategy(Vendor.authenticate()));
+passport.serializeUser(Vendor.serializeUser());
+passport.deserializeUser(Vendor.deserializeUser());
 // app.use intercetta tutte le richieste e risponde a tutte, ci permette di impostare un middleware di locals, che permette di accedere a moduli all'interno delle routes
 app.use((req, res, next) => {
   // se req.originalUrl non include i path login o la home allora reindirizza la sessione a req.originalUrl,
@@ -77,10 +66,10 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error');
   next();
 });
-// -------------------------------
-// -------------------------------
-// Routing Produttori
+// Routing-----------------------------------------------------------------
 app.use('/produttori', farmRoute);
+// Registrazione Produttori
+app.use('/produttori/registrazione', vendorRoute);
 // Routing Recensioni
 app.use('/produttori/:id/recensione', reviewRoute);
 // Routing Prodotti
@@ -91,21 +80,17 @@ app.use('/', userRoute);
 app.get('/', (req, res) => {
   res.render('home');
 });
-
-// Routing registrazione Produttori
-//
-app.use('/', vendorRoute);
-// Routing 404
+// Routing 404 ------------------------------------------------------------------------
 app.all('*', (req, res, next) => {
   next(new ExpressError('Page Not Found', 404));
 });
-// middleware error
+// middleware error-------------------------------------------------------------------
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;
   if (!err.message) err.message = 'Damn an Error!!!';
   res.status(statusCode).render('error', { err });
 });
-// listening
+// listening---------------------------------------------------------------
 app.listen(8080, () => {
   console.log('Ok Buddy I am online on port 8080!!!');
 });

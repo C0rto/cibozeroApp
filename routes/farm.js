@@ -52,7 +52,7 @@ const country = [
 ];
 // ----------------------------------------------------------
 
-// Produttori Indice
+// Produttori Indice---------------------------------------------------
 router.get(
   '/',
   catchAsync(async (req, res) => {
@@ -60,8 +60,21 @@ router.get(
     res.render('farms/index', { farms });
   })
 );
-
-// Mostra singolo Produttore
+// Modulo di registrazione produttore-------------------------------------------------------------
+router.get('/registrazione', (req, res) => {
+  res.render('farms/new', { country });
+});
+router.post(
+  '/',
+  validateFarm,
+  catchAsync(async (req, res, next) => {
+    const newFarm = new Farm(req.body);
+    await newFarm.save();
+    req.flash('success', 'Ti diamo ufficialmente il benvenuto su cibozero');
+    res.redirect('/produttori');
+  })
+);
+// Mostra singolo Produttore-------------------------------------------
 router.get(
   '/:id',
   catchAsync(async (req, res, next) => {
