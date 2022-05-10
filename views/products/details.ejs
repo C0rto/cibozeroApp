@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/header') %>
+  <body>
+    <%- include('../partials/navbar') %>
+    <div
+      class="d-flex text-white p-2 justify-content-between"
+      style="background-color: #415624"
+    >
+      <a href="/prodotti" class="text-white ms-4" style="text-decoration: none">
+        < Indietro</a
+      >
+      <a
+        href="/prodotti?category=<%= productFound.category %>"
+        class="text-white me-4 text-capitalize"
+        style="text-decoration: none"
+        ><%= productFound.category %> >
+      </a>
+    </div>
+    <div class="bg-light text-center mb-3 p-3">
+      <h1 class="text-center text-capitalize"><%= productFound.name %></h1>
+      <h4 class="my-3">
+        Prezzo: <small> <%= productFound.price %> <i> €/Kg</i> </small>
+      </h4>
+    </div>
+    <div class="col-md text-center d-flex justify-content-center mb-5">
+      <div class="body" style="width: 22rem">
+        <h3><b><%= productFound.farm.name %></b></h3>
+        <small
+          ><p>
+            <a
+              class="text-success"
+              href="/produttori/<%= productFound.farm._id %> "
+              >Visita il produttore</a
+            >
+          </p></small
+        >
+        <img
+          src="https://images.unsplash.com/photo-1619528395742-4e41ab87403b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dG9ydGVsbGluaXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60"
+          class="img-fluid mb-1 rounded-circle"
+          alt=""
+        />
+      </div>
+    </div>
+    <div class="p-3 mx-5">
+      <p class="card-text p-3">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut architecto
+        molestiae obcaecati adipisci accusamus ad laudantium? Est modi minus
+        quaerat, porro commodi culpa perspiciatis laudantium, quos molestiae
+        ducimus, in aliquam! Cumque, ipsum voluptates voluptas, temporibus
+        maxime sed dignissimos architecto quaerat at iure ea cum necessitatibus,
+        minima aut. Sit laborum nam assumenda ab accusamus! Delectus sapiente,
+        error quasi, distinctio architecto tempore at iste ab saepe, et aperiam
+        sint ducimus voluptatem incidunt ratione! Quaerat, minus. Explicabo
+        nesciunt deleniti quod temporibus minima distinctio, quisquam suscipit
+        quasi cupiditate neque ut! Deserunt maiores autem dicta cum aspernatur
+        pariatur. Minima magnam quos doloribus sequi, repellendus iusto,
+        asperiores nobis sit error voluptate sint accusantium numquam voluptatem
+        nemo corrupti. Architecto quidem sequi atque ipsa asperiores molestias
+        eum inventore!
+      </p>
+    </div>
+    <div class="col-md text-center d-flex justify-content-center mb-5">
+      <div style="max-width: 50rem">
+        <div class="d-flex justify-content-around mt-5">
+          <a
+            class="btn btn-sm btn-primary rounded-pill p-2 mx-2"
+            href="/prodotti/<%=productFound._id  %>/edit "
+            >Modifica prodotto</a
+          >
+          <form
+            action="/prodotti/<%= productFound._id %>?_method=DELETE"
+            method="POST"
+          >
+            <button
+              class="btn btn-sm btn-danger rounded-pill p-2 mx-2"
+              type="submit"
+            >
+              Cancella Prodotto
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/footer') %>
+  </body>
+</html>

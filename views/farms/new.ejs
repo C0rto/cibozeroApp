@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/header') %>
+  <body style="background-color:#fcf8f2;">
+    <%- include('../partials/navbar') %>
+    <div class="container my-4 p-3" style="max-width: 60rem">
+      <h2 class="text-center mb-3"><b>Registrazione Produttore</b></h2>
+      <img src="https://images.unsplash.com/photo-1589923188900-85dae523342b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8ZmFybSUyMHdvcmtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="img-fluid shadow-sm rounded" style="object-fit:cover ; height: 27rem;
+    width: 100vw;" alt=""/>
+      <form
+        action="/produttori"
+        method="POST"
+        class="needs-validation p-3"
+        novalidate
+      >
+    
+        <!-- prima row di dati -->
+        <h4 class="mt-4 mb-2"><b>La tua Azienda</b></h4>
+        <p class="mb-4">I dati fondamentali della tua azienda saranno presenti nella tua vetrina su cibozero e serviranno ai clienti per informarsi sulla tua azienda.</p>
+        <div class="row mb-2">
+          <div class="col-md-6">
+            <label for="name" class="form-label"><b>Azienda</b></label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Scrivi il nome dell'Azienda"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="holder" class="form-label"><b>Titolare</b></label>
+            <input
+              type="text"
+              name="holder"
+              id="holder"
+              placeholder="Scrivi il nome del titolare"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <!-- seconda row di dati -->
+        <div class="row mb-2">
+          <div class="col-md-6">
+            <label for="email" class="form-label"><b>Email</b></label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Scrivi l'email per comunicare con i clienti"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="phone" class="form-label"><b>Telefono</b></label>
+            <input
+              type="text"
+              name="phone"
+              id="phone"
+              placeholder="Scrivi il numero di telefono"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+         <!-- fiscalità row di dati -->
+        <div class="row mb-2">
+          <div class="col-md-12">
+            <label for="PVIA" class="form-label"><b>Partita Iva</b></label>
+            <input
+              type="text"
+              name="PIVA"
+              id="PIVA"
+              placeholder="Scrivi la partita iva della tua azienda"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <!-- terza row di dati -->
+        <h4 class="mt-4 mb-2"><b>Dove si trova la tua Azienda</b></h4>
+        <p class="mb-4">Cibozero è il portale del cibo a Km zero, è fondamentale fornire la posizione della tua azienda, aiuterà le persone intorno a te a trovarti con la geolocalizzazione.</p>
+        <div class="row mb-2">
+          <div class="col-md-4">
+            <label for="country" class="form-label"><b>Regione</b></label>
+            <select name="country" id="country" class="form-select">
+              <option value=""></option>
+            <% for(let c of country){ %> 
+              <option value="<%= c %>"> <%= c %> </option>
+            <% } %> 
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="city" class="form-label"><b>Città</b></label>
+            <input
+              type="text"
+              name="city"
+              id="city"
+              placeholder="Scrivi la Città o Paese"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-3">
+            <label for="name" class="form-label"><b>Provincia</b></label>
+            <input
+              type="text"
+              name="district"
+              id="district"
+              placeholder="Scrivi la Provincia"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-2">
+            <label for="name" class="form-label"><b>CAP</b></label>
+            <input
+              type="text"
+              name="CAP"
+              id="CAP"
+              placeholder="Scrivi il CAP"
+              class="form-control"
+              required
+            />
+          </div>
+        </div>
+        <!-- quarta row di dati -->
+        <h4 class="mt-4 mb-2"><b>Parlaci della tua Azienda</b></h4>
+        <p class="mb-4">Hai quasi finito, non ti resta che raccontare la tua azienda ai tuoi futuri clienti. Sei completamente libero, ma ricorda di parlare con il cuore.</p>
+        <div class="row ">
+          <div class="col-md-12">
+            <label for="description" class="form-label"><b>Descrizione</b></label>
+           <textarea name="description" id="descritpion" cols="30" rows="20" class="form-control" placeholder="Spazio alla tua fantasia, parlaci della tua azienda e dei tuoi prodotti"></textarea>
+          </div>
+        </div>
+        </div>
+        <div class="d-flex justify-content-center mb-5">
+          <button type="submit" class="btn btn-bg btn-success fs-5" style="min-width: 16rem;"><b>Iscriviti su Cibozero</b></button>
+        </div>
+      </form>
+    </div>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>

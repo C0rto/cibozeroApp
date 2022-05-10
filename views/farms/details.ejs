@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/header') %>
+  <link rel="stylesheet" href="/css/stars.css" />
+  <body style="background-color:#fcf8f2;">
+    <%- include('../partials/navbar') %>
+    <div class=" text-white p-2 mb-2"  style="background-color: #415624">
+      <a href="/produttori" class="text-white" style="text-decoration: none">
+        < Indietro</a
+        >
+      </div>
+    <div class="container-md mb-3">
+      <div class="row justify-content-md-center text-center">
+        <h1><%= farmFound.name %></h1>
+        <h4>
+          in <%= farmFound.country %> a
+          <small> <%= farmFound.city %></small>
+        </h4>
+        <div class="row-md">
+          <div>
+            <a
+              href="/produttori/<%= farmFound._id %>/prodotto/nuovo "
+              class="btn btn-success mx-2 rounded-pill mb-2"
+              >Aggiungi un prodotto</a
+            >
+          </div>
+          <img
+            src="https://images.unsplash.com/photo-1517817500400-c961b0488325?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fGZhcm18ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+            style="object-fit: cover; height: 26rem"
+            class="img-fluid mb-3"
+          />
+
+          <div
+            class="bg-light p-3 my-3 border rounded"
+            style="margin: auto; max-width: 25rem"
+          >
+            <h5 class="text-capitalize">Contatti</h5>
+            <p>
+              Email: <small class="text-muted"><%= farmFound.email %></small>
+              <br />
+              Telefono: <small class="text-muted"><%= farmFound.phone %></small>
+            </p>
+          </div>
+        </div>
+        <p><%= farmFound.description %></p>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center my-3 mb-5">
+      <a
+        href="/produttori/<%= farmFound._id %>/modifica "
+        class="btn btn-primary text-white mx-2"
+        >Modifica</a
+      >
+      <!-- modal button -->
+      <button
+        type="button"
+        class="btn btn-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Elimina
+      </button>
+      <!-- modal body -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Elimina Azienda
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              Sei sicuro di voler eliminare la tua azienda da Cibozero?
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Annulla
+              </button>
+              <form
+                action="/produttori/<%= farmFound._id %>?_method=DELETE"
+                method="POST"
+              >
+                <button class="btn btn-danger mx-2" type="submit">
+                  Conferma Eliminazione
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end of modal -->
+    </div>
+    <div class="container-md my-3 mb-5">
+      <div class="row">
+        <div class="slicky">
+          <% for (let product of farmFound.products){ %>
+          <div class="col d-flex my-2 justify-content-center mx-2">
+            <a
+              href="/prodotti/<%= product._id %> "
+              class="text-dark text-capitalize"
+              style="text-decoration: none"
+            >
+              <div
+                class="card border-light shadow-sm"
+                style="width: 13.5rem; border-radius: 0.75rem"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1575218823251-f9d243b6f720?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fHZlZ2V0YWJsZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+                  class="card-img-top"
+                  style="border-radius: 0.75rem 0.75rem 0 0"
+                />
+                <div class="card-body">
+                  <div class="d-flex flex-column">
+                    <h6 class="card-title text-center"><%= product.name %></h6>
+
+                    <p
+                      class="list-group-item text-center border-light bg-success text-white"
+                      s
+                    >
+                      <%= product.price %> <small><i>€ al Kg</i></small>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <!-- reviews -->
+    <% if(currentUser){ %> 
+    <div class="container-sm my-4">
+      <div class="row text-center">
+        <div class="col">
+          <form
+            action="/produttori/<%= farmFound._id %>/recensione"
+            method="POST"
+            class="needs-validation"
+            novalid
+            ate
+          >
+          
+            <div class="mb-3">
+              <label for="body" class="form-label">Scrivi una recensione su <%= farmFound.name %> </label>
+              <textarea
+                class="form-control"
+                name="body"
+                id="body"
+                cols="20"
+                rows="10"
+                required
+              ></textarea>
+            </div>
+              <div class="mb-5 d-flex justify justify-content-center">  
+<fieldset class="starability-basic">
+  <h6> <small>Vota :</small> </h6>
+  <!-- <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="1" checked aria-label="No rating." /> -->
+  <input type="radio" id="first-rate1" name="rating" checked aria-label="No rating." value="1" />
+  <label for="first-rate1" title="Terrible">1 star</label>
+  <input type="radio" id="first-rate2" name="rating" value="2" />
+  <label for="first-rate2" title="Not good">2 stars</label>
+  <input type="radio" id="first-rate3" name="rating" value="3" />
+  <label for="first-rate3" title="Average">3 stars</label>
+  <input type="radio" id="first-rate4" name="rating" value="4" />
+  <label for="first-rate4" title="Very good">4 stars</label>
+  <input type="radio" id="first-rate5" name="rating" value="5" />
+  <label for="first-rate5" title="Amazing">5 stars</label>
+</fieldset>
+            </div>
+            <button class="btn btn-sm btn-dark">Invia Recensione</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  <% } %> 
+
+  <% if(farmFound.reviews.length){ %> 
+    <div class="container mt-5 my-3">
+      <h6 class="text-center">Leggi le recensioni</h6>
+      <% for(let review of farmFound.reviews ){ %>
+      <div class="container">
+        <div class="row p-2">
+          <div class="col border-light shadow-sm rounded my-1 px-3 py-4 bg-light">
+            <h4><%= review.author.username %> <small>dice:</small></h4>
+            <p class="text-muted">
+              <small><i><%= review.body %></i></p>
+              </small>
+              <p class="starability-result my-2 " data-rating="<%= review.rating %>"></p>          
+              <div class="d-flex justify-content-end">
+              <% if(currentUser && review.author.equals(currentUser._id)){ %>   
+                <form action="/produttori/<%= farmFound._id %>/recensione/<%= review._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+            <% } %> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+<% } %> 
+    <%- include('../partials/footer') %>
+  </body>
+</html>

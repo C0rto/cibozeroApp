@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/header') %>
+  <body>
+    <%- include('../partials/navbar') %>
+    <h1 class="text-center mt-3">Modifica </h1>
+    <h2 class="text-center text-capitalize text-muted"> <%= productFound.name %></h2>
+    <div class="container mt-3" style="height: 100vh">
+      <div class="row">
+        <div class="col-md d-flex justify-content-center mb-5">
+          <div class="form-control" style="max-width: 32rem">
+            <img
+                src="https://images.unsplash.com/photo-1619528395742-4e41ab87403b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dG9ydGVsbGluaXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60"
+                class="img-fluid mb-3"
+                alt=""
+              />
+          <form action="/prodotti/<%= productFound._id %>?_method=PUT" method="POST">
+            <div class="mb-3">
+              <label for="name" class="form-label">Nome</label>
+              <input
+              class="form-control"
+                type="text"
+                name="name"
+                id="name"
+                value="<%= productFound.name %>"
+              />
+            </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Prezzo</label>
+        <div class="input-group">
+          
+          <input
+          class="form-control"
+            type="text"
+            name="price"
+            id="price"
+            value="<%= productFound.price %>"
+          />
+          <span class="input-group-text">€</span>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="name" class="form-label">Categoria</label>
+        <select class="form-control" name="category" id="category">
+          <% for(let cat of categories){ %>
+          <option value="<%= cat %>" <%= productFound.category === cat ? 'selected ' : '' %> ><%= cat %></option>
+          <% } %>
+        </select>
+      </div>
+      <div class="d-flex justify-content-center my-4">
+        <button class="btn btn-primary mx-2" type="submit">Modifica</button>
+          <a class="btn btn-danger mx-2" href="/prodotti/<%= productFound._id %>">Annulla</a>
+      </div>
+    </form>
+          </div>
+        </div>
+      </div>
+    </div>
+      <%- include('../partials/footer') %>
+  </body>
+</html>

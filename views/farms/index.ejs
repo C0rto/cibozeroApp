@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/header') %>
+  <body>
+    <%- include('../partials/navbar') %> <br />
+
+    <div class="container-md mb-5">
+      <div class="container text-center my-4">
+        <h1>I produttori</h1>
+        <h2 class="text-muted">Una lista dei migliori produttori</h2>
+      </div>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
+        nesciunt quam suscipit architecto omnis sed. Fugiat mollitia harum,
+        accusantium ipsum, accusamus ullam magnam iusto, neque sint debitis
+        consequuntur beatae nostrum. Nulla perspiciatis rem deserunt quaerat
+        consequatur dolorem? Natus iure nostrum, adipisci culpa nobis vel
+        reprehenderit veritatis pariatur nam sint repudiandae accusamus
+        recusandae facere illo officia sunt? Nihil illo nisi, porro aspernatur
+        repellendus, voluptatem necessitatibus eos rem molestiae eius ea maxime
+        voluptatum.
+      </p>
+    </div>
+
+    <div class="container-md mb-5" style="min-height: 70vh">
+      <div class="row justify-content-center">
+        <% for (let farm of farms){ %>
+        <div class="col-md-3 d-flex mt-4">
+          <div
+            class="card shadow-sm border-light"
+            style="border-radius: 0.75rem"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1485637701894-09ad422f6de6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MTZ8aUJLblpzSXc4NXN8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"
+              class="card-img-top"
+              style="border-radius: 0.75rem 0.75rem 0 0"
+            />
+            <div class="card-body">
+              <div class="d-flex flex-column justify-content-center">
+                <div class="farm">
+                  <h6 class="card-title text-center"><%= farm.name %></h6>
+                  <p class="text-center">
+                    <small class="text-muted"
+                      ><b><%= farm.location %> </b></small
+                    >
+                  </p>
+                </div>
+                <a
+                  href="/produttori/<%= farm._id %> "
+                  class="btn btn-sm text-white"
+                  style="background-color: #567132"
+                >
+                  Visita
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <%- include('../partials/footer') %>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/header') %>
+  <body>
+    <%- include('../partials/navbar') %>
+    <h1 class="text-center my-2 mb-2"><%= farm.name %></h1>
+    <h3 class="text-center text-muted">Crea un nuovo prodotto</h3>
+
+    <div class="container" style="height: 90vh">
+      <div class="row">
+        <div class="col-md d-flex justify-content-center mb-5">
+          <div class="form-control" style="max-width: 32rem">
+            <img
+              src="https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjV8fGZhcm18ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+              class="img-fluid mb-3"
+              alt=""
+            />
+            <form action="/produttori/<%= farm._id %>/prodotti " method="POST">
+              <div class="mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <input type="text" class="form-control" name="name" id="name" />
+              </div>
+              <div class="mb-3">
+                <label for="price" class="form-label">Prezzo</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="price"
+                    id="price"
+                  />
+                  <span class="input-group-text">€</span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="name" class="form-label">Categoria</label>
+                <select name="category" class="form-select" id="category">
+                  <% for(let cat of categories){ %>
+                  <option value="<%= cat %>"><%= cat %></option>
+                  <% } %>
+                </select>
+              </div>
+
+              <div class="d-flex justify-content-center my-4">
+                <button class="btn btn-sm btn-primary mx-2" type="submit">
+                  Aggiungi
+                </button>
+
+                <a
+                  class="btn btn-sm btn-danger mx-2"
+                  href="/produttori/<%= farm._id %> "
+                  >Annulla</a
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('../partials/footer') %>
+  </body>
+</html>
