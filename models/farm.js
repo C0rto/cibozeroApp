@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const Review = require('./reviews');
-const Product = require('./products');
+const Review = require("./reviews");
+const Product = require("./products");
 
 const farmSchema = new Schema({
   name: { type: String, required: true },
@@ -15,44 +15,45 @@ const farmSchema = new Schema({
   country: {
     type: String,
     enum: [
-      'Abruzzo',
-      'Basilicata',
-      'Calabria',
-      'Campania',
-      'Emilia-Romagna',
-      'Friuli-Venezia Giulia',
-      'Lazio',
-      'Liguria',
-      'Lombardia',
-      'Marche',
-      'Molise',
-      'Piemonte',
-      'Puglia',
-      'Sardegna',
-      'Sicilia',
-      'Toscana',
-      'Trentino-Alto Adige',
-      'Umbria',
+      "Abruzzo",
+      "Basilicata",
+      "Calabria",
+      "Campania",
+      "Emilia-Romagna",
+      "Friuli-Venezia Giulia",
+      "Lazio",
+      "Liguria",
+      "Lombardia",
+      "Marche",
+      "Molise",
+      "Piemonte",
+      "Puglia",
+      "Sardegna",
+      "Sicilia",
+      "Toscana",
+      "Trentino-Alto Adige",
+      "Umbria",
       "Valle d'Aosta",
-      'Veneto',
+      "Veneto",
     ],
   },
   description: { type: String, required: true },
-  products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+  products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
   reviews: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Review',
+      ref: "Review",
     },
   ],
+  owner: { type: Schema.Types.ObjectId, ref: "User" },
 });
 // post function for deleting all products from a deleted Farm è un middleware di mongoose di tipo post e si basa sulla query. Ha bisogno dei modelli di prodotto e recensione che deve eliminare con la proprietà $in, elimina i prodotti e le recensioni il cui id si trova nell'array dei prodotti e delle recensioni di quella farm che viene eliminata. In pratica elimina recensioni e prodotti associati alla farm
-farmSchema.post('findOneAndDelete', async function (farm) {
+farmSchema.post("findOneAndDelete", async function (farm) {
   if (farm.products.length || farm.reviews.lenght) {
     await Product.deleteMany({ _id: { $in: farm.products } });
     await Review.deleteMany({ _id: { $in: farm.reviews } });
   }
 });
 // exporting Schema
-const Farm = mongoose.model('Farm', farmSchema);
+const Farm = mongoose.model("Farm", farmSchema);
 module.exports = Farm;

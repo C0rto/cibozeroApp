@@ -1,109 +1,103 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const catchAsync = require('../helpers/catchAsync');
-const ExpressError = require('../helpers/ExpressError');
-const Farm = require('../models/farm');
-const Product = require('../models/products');
-const { farmSchema } = require('../schemas/validateSchemas');
-const { isLoggedIn } = require('../middleware');
+const catchAsync = require("../helpers/catchAsync");
+const Farm = require("../models/farm");
+const Product = require("../models/products");
+const { isLoggedIn, isOwner, validateFarm } = require("../middleware");
 // -------------------------------------------------------
-const validateFarm = (req, res, next) => {
-  const { error } = farmSchema.validate(req.body);
-  if (error) {
-    const errorMsg = error.details.map((el) => el.message).join(',');
-    throw new ExpressError(errorMsg, 400);
-  } else {
-    next();
-  }
-};
-// ----------------------------------------------------------
+
 const categories = [
-  'Ortofrutta',
-  'Carne',
-  'Pesce',
-  'Salumi e Formaggi',
-  'Pasta, Riso, Cereali, Farine',
-  'Pane e prodotti da forno',
-  'Vino e altre bevande alcoliche',
-  'Bevande analcoliche',
-  'Altro',
+  "Ortofrutta",
+  "Carne",
+  "Pesce",
+  "Salumi e Formaggi",
+  "Pasta, Riso, Cereali, Farine",
+  "Pane e prodotti da forno",
+  "Vino e altre bevande alcoliche",
+  "Bevande analcoliche",
+  "Altro",
 ];
 const country = [
-  'Abruzzo',
-  'Basilicata',
-  'Calabria',
-  'Campania',
-  'Emilia-Romagna',
-  'Friuli-Venezia Giulia',
-  'Lazio',
-  'Liguria',
-  'Lombardia',
-  'Marche',
-  'Molise',
-  'Piemonte',
-  'Puglia',
-  'Sardegna',
-  'Sicilia',
-  'Toscana',
-  'Trentino-Alto Adige',
-  'Umbria',
+  "Abruzzo",
+  "Basilicata",
+  "Calabria",
+  "Campania",
+  "Emilia-Romagna",
+  "Friuli-Venezia Giulia",
+  "Lazio",
+  "Liguria",
+  "Lombardia",
+  "Marche",
+  "Molise",
+  "Piemonte",
+  "Puglia",
+  "Sardegna",
+  "Sicilia",
+  "Toscana",
+  "Trentino-Alto Adige",
+  "Umbria",
   "Valle d'Aosta",
-  'Veneto',
+  "Veneto",
 ];
 // ----------------------------------------------------------
 
 // Produttori Indice---------------------------------------------------
 router.get(
-  '/',
+  "/",
   catchAsync(async (req, res) => {
     const farms = await Farm.find({});
-    res.render('farms/index', { farms });
+    res.render("farms/index", { farms });
   })
 );
 // Modulo di registrazione produttore-------------------------------------------------------------
-router.get('/registrazione', (req, res) => {
-  res.render('farms/new', { country });
+router.get("/registrazione", isLoggedIn, (req, res) => {
+  res.render("farms/new", { country });
 });
 router.post(
-  '/',
+  "/",
+  isLoggedIn,
   validateFarm,
   catchAsync(async (req, res, next) => {
     const newFarm = new Farm(req.body);
+    newFarm.owner = req.user._id;
     await newFarm.save();
-    req.flash('success', 'Ti diamo ufficialmente il benvenuto su cibozero');
-    res.redirect('/produttori');
+    req.flash("success", "Ti diamo ufficialmente il benvenuto su cibozero");
+    res.redirect("/produttori");
   })
 );
 // Mostra singolo Produttore-------------------------------------------
 router.get(
-  '/:id',
-  catchAsync(async (req, res, next) => {
+  "/:id",
+  catchAsync(async (req, res) => {
     const { id } = req.params;
     const farmFound = await Farm.findById(id)
-      .populate('products')
-      .populate({ path: 'reviews', populate: { path: 'author' } });
+      .populate("products")
+      .populate("owner")
+      .populate({ path: "reviews", populate: { path: "author" } });
     if (!farmFound) {
-      req.flash('error', 'Questa azienda non è più registrata su Cibozero');
-      res.redirect('/produttori');
+      req.flash("error", "Questa azienda non è più registrata su Cibozero");
+      res.redirect("/produttori");
     }
-    res.render('farms/details', { farmFound });
+    res.render("farms/details", { farmFound });
   })
 );
 // Modifica singolo Produttore
 router.get(
-  '/:id/modifica',
+  "/:id/modifica",
+  isLoggedIn,
+  isOwner,
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farm = await Farm.findById(id);
     if (!farm) {
-      req.flash('error', 'Questa azienda non è più registrata su Cibozero');
-      res.redirect('/produttori');
+      req.flash("error", "Questa azienda non è più registrata su Cibozero");
+      res.redirect("/produttori");
     }
-    res.render('farms/edit', { farm, country });
+    res.render("farms/edit", { farm, country });
   })
 );
 router.patch(
-  '/:id',
+  "/:id",
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farmed = await Farm.findByIdAndUpdate(id, req.body, {
@@ -114,15 +108,17 @@ router.patch(
 );
 // Crea Prodotto per un singolo produttore
 router.get(
-  '/:id/prodotto/nuovo',
+  "/:id/prodotto/nuovo",
+  isLoggedIn,
+  isOwner,
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farm = await Farm.findById(id);
-    res.render('products/new', { categories, farm });
+    res.render("products/new", { categories, farm });
   })
 );
 router.post(
-  '/:id/prodotti',
+  "/:id/prodotti",
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farm = await Farm.findById(id);
@@ -132,21 +128,23 @@ router.post(
     product.farm = farm;
     await farm.save();
     await product.save();
-    req.flash('success', `${product.name} aggiunto con successo!!!`);
+    req.flash("success", `${product.name} aggiunto con successo!!!`);
     res.redirect(`/produttori/${farm._id}`);
   })
 );
 // Elimina Produttore
 router.delete(
-  '/:id',
+  "/:id",
+  isLoggedIn,
+  isOwner,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const farmDeleted = await Farm.findByIdAndDelete(id);
     req.flash(
-      'success',
-      'Hai annullato correttamente la tua iscrizione a Cibozero'
+      "success",
+      "Hai annullato correttamente la tua iscrizione a Cibozero"
     );
-    res.redirect('/produttori');
+    res.redirect("/produttori");
   })
 );
 

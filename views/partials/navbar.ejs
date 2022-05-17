@@ -37,7 +37,7 @@
           <a class="nav-link text-white" href="/prodotti">Lista Prodotti</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="/scopricibozero"
+          <a class="nav-link text-white" href="/produttori/registrazione"
             >Sei un Produttore?</a
           >
         </li>
@@ -50,7 +50,9 @@
         >
         <% } else {%>
         <a href="/logout" class="btn btn-sm btn-danger mx-2"
-          ><small style="font-size: 0.75rem"><b>logout</b></small></a
+          ><small style="font-size: 0.75rem"
+            ><b><%= currentUser.name %> logout</b></small
+          ></a
         >
         <% } %>
       </div>
