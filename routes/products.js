@@ -3,41 +3,7 @@ const router = express.Router({ mergeParams: true });
 const catchAsync = require("../helpers/catchAsync");
 const Product = require("../models/products");
 const { isLoggedIn, isOwner } = require("../middleware");
-// ----------------------------------------------------------
-const categories = [
-  "Ortofrutta",
-  "Carne",
-  "Pesce",
-  "Salumi e Formaggi",
-  "Pasta, Riso, Cereali, Farine",
-  "Pane e prodotti da forno",
-  "Vino e altre bevande alcoliche",
-  "Bevande analcoliche",
-  "Altro",
-];
-const country = [
-  "Abruzzo",
-  "Basilicata",
-  "Calabria",
-  "Campania",
-  "Emilia-Romagna",
-  "Friuli-Venezia Giulia",
-  "Lazio",
-  "Liguria",
-  "Lombardia",
-  "Marche",
-  "Molise",
-  "Piemonte",
-  "Puglia",
-  "Sardegna",
-  "Sicilia",
-  "Toscana",
-  "Trentino-Alto Adige",
-  "Umbria",
-  "Valle d'Aosta",
-  "Veneto",
-];
-// -------------------------------------------------------------------------------------
+const { categories, country } = require("../helpers/datas");
 // Products Routes
 router.get(
   "/",
@@ -77,8 +43,6 @@ router.get(
 
 router.get(
   "/:id/edit",
-  isLoggedIn,
-  isOwner,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const productFound = await Product.findById(id);
@@ -87,8 +51,6 @@ router.get(
 );
 router.put(
   "/:id",
-  isLoggedIn,
-  isOwner,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const product = await Product.findByIdAndUpdate(id, req.body, {
@@ -100,8 +62,6 @@ router.put(
 
 router.delete(
   "/:id",
-  isLoggedIn,
-  isOwner,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const productDeleted = await Product.findByIdAndDelete(id);

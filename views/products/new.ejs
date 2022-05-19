@@ -15,7 +15,11 @@
               class="img-fluid mb-3"
               alt=""
             />
-            <form action="/produttori/<%= farm._id %>/prodotti " method="POST">
+            <form
+              action="/produttori/<%= farm._id %>/prodotti "
+              method="POST"
+              enctype="multipart/form-data"
+            >
               <div class="mb-3">
                 <label for="name" class="form-label">Nome</label>
                 <input type="text" class="form-control" name="name" id="name" />
@@ -30,6 +34,11 @@
                     id="price"
                   />
                   <span class="input-group-text">€</span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="input-group">
+                  <input type="file" name="image" id="" />
                 </div>
               </div>
               <div class="mb-3">

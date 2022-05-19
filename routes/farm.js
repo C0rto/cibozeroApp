@@ -4,42 +4,10 @@ const catchAsync = require("../helpers/catchAsync");
 const Farm = require("../models/farm");
 const Product = require("../models/products");
 const { isLoggedIn, isOwner, validateFarm } = require("../middleware");
-// -------------------------------------------------------
-
-const categories = [
-  "Ortofrutta",
-  "Carne",
-  "Pesce",
-  "Salumi e Formaggi",
-  "Pasta, Riso, Cereali, Farine",
-  "Pane e prodotti da forno",
-  "Vino e altre bevande alcoliche",
-  "Bevande analcoliche",
-  "Altro",
-];
-const country = [
-  "Abruzzo",
-  "Basilicata",
-  "Calabria",
-  "Campania",
-  "Emilia-Romagna",
-  "Friuli-Venezia Giulia",
-  "Lazio",
-  "Liguria",
-  "Lombardia",
-  "Marche",
-  "Molise",
-  "Piemonte",
-  "Puglia",
-  "Sardegna",
-  "Sicilia",
-  "Toscana",
-  "Trentino-Alto Adige",
-  "Umbria",
-  "Valle d'Aosta",
-  "Veneto",
-];
-// ----------------------------------------------------------
+const multer = require("multer");
+const { storage } = require("../cloudinary/index");
+const upload = multer({ storage });
+const { categories, country } = require("../helpers/datas");
 
 // Produttori Indice---------------------------------------------------
 router.get(
@@ -109,8 +77,6 @@ router.patch(
 // Crea Prodotto per un singolo produttore
 router.get(
   "/:id/prodotto/nuovo",
-  isLoggedIn,
-  isOwner,
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farm = await Farm.findById(id);
@@ -119,15 +85,20 @@ router.get(
 );
 router.post(
   "/:id/prodotti",
+  upload.single("image"),
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farm = await Farm.findById(id);
     const { name, price, category } = req.body;
+
     const product = new Product({ name, price, category });
     farm.products.push(product);
     product.farm = farm;
+    const { path, filename } = req.file;
+    product.image = [{ url: path, filename: filename }];
     await farm.save();
     await product.save();
+    console.log(product);
     req.flash("success", `${product.name} aggiunto con successo!!!`);
     res.redirect(`/produttori/${farm._id}`);
   })

@@ -1,5 +1,5 @@
 const Review = require("./models/reviews");
-const { farmSchema } = require("./schemas/validateSchemas");
+const { farmSchema, reviewSchema } = require("./schemas/validateSchemas");
 const ExpressError = require("./helpers/ExpressError");
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -46,4 +46,14 @@ module.exports.isOwner = async (req, res, next) => {
     res.redirect(`/produttori/${id}`);
   }
   next();
+};
+
+module.exports.validateReviews = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    const errorMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(errorMsg, 400);
+  } else {
+    next();
+  }
 };
