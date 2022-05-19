@@ -1,19 +1,16 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router({ mergeParams: true });
-const catchAsync = require("../helpers/catchAsync");
+const catchAsync = require('../helpers/catchAsync');
 const {
   isLoggedIn,
   isReviewAuthor,
   validateReviews,
-} = require("../middleware");
-const Farm = require("../models/farm");
-const Review = require("../models/reviews");
-
-// ---------------------------------------------------------
-
-// ---------------------------------------------------------
+} = require('../middleware');
+const Farm = require('../models/farm');
+const Review = require('../models/reviews');
+//------------------------------------------------- AGGIUNTA DI UNA NUOVA RECENSIONE SUL SINGOLO VENDITORE ----------------------------------------------------------------------------//
 router.post(
-  "/",
+  '/',
   validateReviews,
   isLoggedIn,
   catchAsync(async (req, res) => {
@@ -24,12 +21,13 @@ router.post(
     farm.reviews.push(review);
     await review.save();
     await farm.save();
-    req.flash("success", "Nuova recensione pubblicata su Cibozero");
+    req.flash('success', 'Nuova recensione pubblicata su Cibozero');
     res.redirect(`/produttori/${farm._id}`);
   })
 );
+//------------------------------------------------- ELIMINAZIONE DI UNA SINGOLA RECENSIONE ----------------------------------------------------------------------------//
 router.delete(
-  "/:reviewId",
+  '/:reviewId',
   isLoggedIn,
   isReviewAuthor,
   catchAsync(async (req, res) => {
@@ -38,7 +36,7 @@ router.delete(
       $pull: { reviews: reviewId },
     });
     const deletedReview = await Review.findByIdAndDelete(reviewId);
-    req.flash("success", "Recensione eliminata con successo");
+    req.flash('success', 'Recensione eliminata con successo');
     res.redirect(`/produttori/${id}`);
   })
 );

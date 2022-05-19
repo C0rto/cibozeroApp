@@ -1,71 +1,68 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const catchAsync = require("../helpers/catchAsync");
-const Farm = require("../models/farm");
-const Product = require("../models/products");
-const { isLoggedIn, isOwner, validateFarm } = require("../middleware");
-const multer = require("multer");
-const { storage } = require("../cloudinary/index");
+const catchAsync = require('../helpers/catchAsync');
+const Farm = require('../models/farm');
+const Product = require('../models/products');
+const { isLoggedIn, isOwner, validateFarm } = require('../middleware');
+const multer = require('multer');
+const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
-const { categories, country } = require("../helpers/datas");
-
-// Produttori Indice---------------------------------------------------
+const { categories, country } = require('../helpers/datas');
+//------------------------------------------------- INDICE DI TUTTI I PRODUTTORI HOME PAGE PRODUTTORI ----------------------------------------------------------------------------//
 router.get(
-  "/",
+  '/',
   catchAsync(async (req, res) => {
     const farms = await Farm.find({});
-    res.render("farms/index", { farms });
+    res.render('farms/index', { farms });
   })
 );
-// Modulo di registrazione produttore-------------------------------------------------------------
-router.get("/registrazione", isLoggedIn, (req, res) => {
-  res.render("farms/new", { country });
+//------------------------------------------------- REGISTRAZIONE DI UN SINGOLO PRODUTTORE ----------------------------------------------------------------------------//
+router.get('/registrazione', isLoggedIn, (req, res) => {
+  res.render('farms/new', { country });
 });
 router.post(
-  "/",
+  '/',
   isLoggedIn,
   validateFarm,
   catchAsync(async (req, res, next) => {
     const newFarm = new Farm(req.body);
     newFarm.owner = req.user._id;
     await newFarm.save();
-    req.flash("success", "Ti diamo ufficialmente il benvenuto su cibozero");
-    res.redirect("/produttori");
+    req.flash('success', 'Ti diamo ufficialmente il benvenuto su cibozero');
+    res.redirect('/produttori');
   })
 );
-// Mostra singolo Produttore-------------------------------------------
+//------------------------------------------------- VISUALIZZAZIONE DI UN SINGOLO PRODUTTORE TRAMITE ID ----------------------------------------------------------------------------//
 router.get(
-  "/:id",
+  '/:id',
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const farmFound = await Farm.findById(id)
-      .populate("products")
-      .populate("owner")
-      .populate({ path: "reviews", populate: { path: "author" } });
+      .populate('products')
+      .populate('owner')
+      .populate({ path: 'reviews', populate: { path: 'author' } });
     if (!farmFound) {
-      req.flash("error", "Questa azienda non è più registrata su Cibozero");
-      res.redirect("/produttori");
+      req.flash('error', 'Questa azienda non è più registrata su Cibozero');
+      res.redirect('/produttori');
     }
-    res.render("farms/details", { farmFound });
+    res.render('farms/details', { farmFound });
   })
 );
-// Modifica singolo Produttore
+//------------------------------------------------- MODIFICA DI UN SINGOLO PRODUTTORE TRAMITE ID ----------------------------------------------------------------------------//
 router.get(
-  "/:id/modifica",
-  isLoggedIn,
-  isOwner,
+  '/:id/modifica',
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farm = await Farm.findById(id);
     if (!farm) {
-      req.flash("error", "Questa azienda non è più registrata su Cibozero");
-      res.redirect("/produttori");
+      req.flash('error', 'Questa azienda non è più registrata su Cibozero');
+      res.redirect('/produttori');
     }
-    res.render("farms/edit", { farm, country });
+    res.render('farms/edit', { farm, country });
   })
 );
 router.patch(
-  "/:id",
+  '/:id',
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farmed = await Farm.findByIdAndUpdate(id, req.body, {
@@ -74,48 +71,51 @@ router.patch(
     res.redirect(`/produttori/${farmed._id}`);
   })
 );
-// Crea Prodotto per un singolo produttore
+//------------------------------------------------- CREAZIONE DI UN PRODOTTO ALL'INTERNO DI UN AZIENDA  ----------------------------------------------------------------------------//
 router.get(
-  "/:id/prodotto/nuovo",
+  '/:id/prodotto/nuovo',
+  isLoggedIn,
+  isOwner,
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farm = await Farm.findById(id);
-    res.render("products/new", { categories, farm });
+    res.render('products/new', { categories, farm });
   })
 );
 router.post(
-  "/:id/prodotti",
-  upload.single("image"),
+  '/:id/prodotti',
+  isLoggedIn,
+  isOwner,
+  upload.single('image'),
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farm = await Farm.findById(id);
     const { name, price, category } = req.body;
-
     const product = new Product({ name, price, category });
     farm.products.push(product);
     product.farm = farm;
     const { path, filename } = req.file;
-    product.image = [{ url: path, filename: filename }];
+    product.image = { url: path, filename: filename };
     await farm.save();
     await product.save();
     console.log(product);
-    req.flash("success", `${product.name} aggiunto con successo!!!`);
+    req.flash('success', `${product.name} aggiunto con successo!!!`);
     res.redirect(`/produttori/${farm._id}`);
   })
 );
-// Elimina Produttore
+//------------------------------------------------- ELIMINAZIONE DI UN SINGOLO PRODUTTORE ----------------------------------------------------------------------------//
 router.delete(
-  "/:id",
+  '/:id',
   isLoggedIn,
   isOwner,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const farmDeleted = await Farm.findByIdAndDelete(id);
     req.flash(
-      "success",
-      "Hai annullato correttamente la tua iscrizione a Cibozero"
+      'success',
+      'Hai annullato correttamente la tua iscrizione a Cibozero'
     );
-    res.redirect("/produttori");
+    res.redirect('/produttori');
   })
 );
 

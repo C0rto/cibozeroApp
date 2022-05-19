@@ -3,18 +3,35 @@
   <%- include('../partials/header') %>
   <body>
     <%- include('../partials/navbar') %>
-    <h1 class="text-center mt-3">Modifica </h1>
-    <h2 class="text-center text-capitalize text-muted"> <%= productFound.name %></h2>
-    <div class="container mt-3" style="height: 100vh">
+
+    <div class="container mt-3" >
       <div class="row">
         <div class="col-md d-flex justify-content-center mb-5">
-          <div class="form-control" style="max-width: 32rem">
-            <img
-                src="https://images.unsplash.com/photo-1619528395742-4e41ab87403b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dG9ydGVsbGluaXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=700&q=60"
-                class="img-fluid mb-3"
-                alt=""
-              />
-          <form action="/prodotti/<%= productFound._id %>?_method=PUT" method="POST">
+          <div class="shadow-sm border-light p-4 rounded" >
+            <form action="/prodotti/<%= productFound._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+            <div class="d-flex flex-column align-items-center">
+              <div class="col text-center mb-3" style="width:100% ;">
+                <h6 class="card-header mt-1 p-1 rounded bg-success text-white">Modifica </h6>
+              </div>
+              <h4 class="text-center text-capitalize text-muted"> <%= productFound.name %></h4>
+              <img
+                  src="<%= productFound.image.url %> "
+                  class="img-fluid mb-3"
+                  alt=""
+                />
+  <div class="mb-3">
+                <label for="image" class="form-file-label my-2">
+                  Cambia Immagine</label
+                >
+                <input
+                  class="form-control form-control-sm"
+                  type="file"
+                  name="image"
+                  id="image"
+                />
+              </div>
+            </div>
+            <hr>
             <div class="mb-3">
               <label for="name" class="form-label">Nome</label>
               <input
@@ -28,7 +45,6 @@
       <div class="mb-3">
         <label for="price" class="form-label">Prezzo</label>
         <div class="input-group">
-          
           <input
           class="form-control"
             type="text"
@@ -38,10 +54,10 @@
           />
           <span class="input-group-text">€</span>
         </div>
-      </div>
+      </div>         
       <div class="mb-3">
         <label for="name" class="form-label">Categoria</label>
-        <select class="form-control" name="category" id="category">
+        <select class="form-select" name="category" id="category">
           <% for(let cat of categories){ %>
           <option value="<%= cat %>" <%= productFound.category === cat ? 'selected ' : '' %> ><%= cat %></option>
           <% } %>

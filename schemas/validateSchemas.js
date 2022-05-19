@@ -19,3 +19,9 @@ module.exports.reviewSchema = Joi.object({
   body: Joi.string().min(20).required(),
   rating: Joi.number().min(1).max(5).required(),
 });
+
+module.exports.productSchema = Joi.object({
+  name: Joi.string().required(),
+  price: Joi.number().min(0).required(),
+  description: Joi.string(),
+});
