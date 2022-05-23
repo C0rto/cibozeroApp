@@ -6,7 +6,7 @@
 
     <div class="container-md mb-5">
       <div class="container text-center my-4">
-        <div id="map" style="width:100% ;height:43rem"></div>
+        <div id="map" style="width:100% ;height:23rem"></div>
         <h1>I produttori</h1>
         
         <h2 class="text-muted">Una lista dei migliori produttori</h2>
@@ -38,7 +38,7 @@
                 <span class="text-muted"><b><h5><%= farm.country %></h5></b></span>
                 <div class="btn">
                   <a
-                    href="/produttori/<%= farm.id %> "
+                    href="/produttori/<%= farm._id %> "
                     type="button"
                     class="btn btn-sm btn-outline-success"
                   >
@@ -55,8 +55,10 @@
     <%- include('../partials/footer') %>
       <script>
         const mapToken  = '<%- process.env.MAPBOX_TOKEN %>';
-        const farms = {features:<%- JSON.stringify(farms) %>} 
+        const farms = {features:<%- JSON.stringify(farms) %>};
+        const geo = [<%-locations%>]
       </script>
-    <script src="/js/clusterMap.js"></script>
+
+    <script src="/js/nearMap.js"></script>
   </body>
 </html>

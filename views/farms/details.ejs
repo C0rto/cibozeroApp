@@ -2,6 +2,7 @@
 <html lang="en">
   <%- include('../partials/header') %>
   <link rel="stylesheet" href="/css/stars.css" />
+
   <body style="background-color:#fcf8f2;">
     <%- include('../partials/navbar') %>
     <div class=" text-white p-2 mb-2"  style="background-color: #415624">
@@ -12,25 +13,26 @@
     <div class="container-md mb-3">
       <div class="row justify-content-md-center text-center">
         <h1><%= farmFound.name %></h1> 
+        <h3><%= farmFound.location %> </h3>
         <h2><%= farmFound.owner.username %></h2>
         <h4>
           in <%= farmFound.country %> a
           <small> <%= farmFound.city %></small>
         </h4>
         <div class="row-md">
-          <div>
+          <div class="d-flex flex-column align-items-center ">
             <a
               href="/produttori/<%= farmFound._id %>/prodotto/nuovo "
               class="btn btn-success mx-2 rounded-pill mb-2"
               >Aggiungi un prodotto</a
             >
+            <img
+              src="https://images.unsplash.com/photo-1517817500400-c961b0488325?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fGZhcm18ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
+              style="object-fit: cover; height: 26rem"
+              class="img-fluid mb-3"
+            />
+            <div id='map' style='width: 400px; height: 300px;'></div>   
           </div>
-          <img
-            src="https://images.unsplash.com/photo-1517817500400-c961b0488325?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzB8fGZhcm18ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
-            style="object-fit: cover; height: 26rem"
-            class="img-fluid mb-3"
-          />
-
           <div
             class="bg-light p-3 my-3 border rounded"
             style="margin: auto; max-width: 25rem"
@@ -220,5 +222,10 @@
     </div>
 <% } %> 
     <%- include('../partials/footer') %>
+      <script>
+    const mapToken  = '<%- process.env.MAPBOX_TOKEN %>';
+    const farm = <%- JSON.stringify(farmFound) %>;
+      </script>
+    <script src="/js/showMap.js"></script>
   </body>
 </html>

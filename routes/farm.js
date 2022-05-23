@@ -8,6 +8,9 @@ const multer = require('multer');
 const { storage } = require('../cloudinary/index');
 const upload = multer({ storage });
 const { categories, country } = require('../helpers/datas');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 //------------------------------------------------- INDICE DI TUTTI I PRODUTTORI HOME PAGE PRODUTTORI ----------------------------------------------------------------------------//
 router.get(
   '/',
@@ -25,9 +28,18 @@ router.post(
   isLoggedIn,
   validateFarm,
   catchAsync(async (req, res, next) => {
+    const { city, district, country, CAP } = req.body;
+    const geodata = await geocoder
+      .forwardGeocode({
+        query: `${city},${district},${country},${CAP}`,
+        limit: 1,
+      })
+      .send();
     const newFarm = new Farm(req.body);
+    newFarm.geometry = geodata.body.features[0].geometry;
     newFarm.owner = req.user._id;
     await newFarm.save();
+    console.log(newFarm);
     req.flash('success', 'Ti diamo ufficialmente il benvenuto su cibozero');
     res.redirect('/produttori');
   })
@@ -65,9 +77,18 @@ router.patch(
   '/:id',
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
+    const { city, district, country, CAP } = req.body;
+    const geodata = await geocoder
+      .forwardGeocode({
+        query: `${city},${district},${country},${CAP}`,
+        limit: 1,
+      })
+      .send();
     const farmed = await Farm.findByIdAndUpdate(id, req.body, {
       runValidators: true,
     });
+    farmed.location = geodata.body.features[0].geometry;
+    await farmed.save();
     res.redirect(`/produttori/${farmed._id}`);
   })
 );

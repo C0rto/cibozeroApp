@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include('partials/header') %>
-  <body>
-    <img
-      src="https://images.unsplash.com/photo-1569880153113-76e33fc52d5f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80"
-      style="object-fit: cover; height: 100vh; width: 100%"
-      class="img-fluid"
-      alt=""
-    />
+  <body style="background-color: #567132">
     <div
-      class="centered"
+      class="d-flex flex-column align-items-center"
       style="
         position: absolute;
         top: 50%;
@@ -17,10 +11,36 @@
         transform: translate(-50%, -50%);
       "
     >
-      <a href="/prodotti" class="btn btn-success shadow-lg text-uppercase fs-1">
-        <h1 class="p-2" style="font-size: 3.2rem">Entra in Cibozero</h1>
+      <img
+        src="/img/Logo_white.svg"
+        class="mb-3"
+        style="width: 10rem"
+        alt="cibozero"
+      />
+      <h1 class="my-1 text-white">Cibozero</h1>
+      <div class="container text-center text-white">
+        <form action="/" method="POST">
+          <input
+            type="text"
+            class="form-control my-4"
+            placeholder="Dove Sei?"
+            name="city"
+            id="city"
+          />
+          <button
+            type="submit"
+            class="btn btn-outline-light text-center shadow rounded fs-6 mt-3"
+          >
+            Cerca
+          </button>
+        </form>
+      </div>
+      <a
+        href="/produttori"
+        class="btn btn-light text-center shadow rounded fs-6 mt-3"
+      >
+        Entra in Cibozero
       </a>
     </div>
-    <%- include('partials/footer') %>
   </body>
 </html>
