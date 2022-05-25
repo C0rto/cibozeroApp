@@ -89,27 +89,40 @@ app.get('/', (req, res) => {
 //  routing for search location ---------------------------
 app.post('/', async (req, res) => {
   const { city } = req.body;
-  const geodata = await geocoder
-    .forwardGeocode({
-      query: `${city}`,
-      limit: 1,
-    })
-    .send();
-  const locations = geodata.body.features[0].geometry.coordinates;
-  const farms = await db
-    .collection('farms')
-    .aggregate([
-      {
-        $geoNear: {
-          near: { type: 'Point', coordinates: locations },
-          distanceField: 'dist.calculated',
-          maxDistance: 70000,
-          spherical: true,
+  if (city) {
+    const geodata = await geocoder
+      .forwardGeocode({
+        query: `${city}`,
+        limit: 1,
+      })
+      .send();
+    const locations = geodata.body.features[0].geometry.coordinates;
+    const farms = await db
+      .collection('farms')
+      .aggregate([
+        {
+          $geoNear: {
+            near: { type: 'Point', coordinates: locations },
+            distanceField: 'dist.calculated',
+            maxDistance: 70000,
+            spherical: true,
+          },
         },
-      },
-    ])
-    .toArray();
-  res.render('farms/near', { farms, locations });
+      ])
+      .toArray();
+    if (!farms.length) {
+      req.flash(
+        'error',
+        'Mi dispiace, non ci sono produttori nella tua zona!!!'
+      );
+      res.redirect('/produttori');
+    } else {
+      res.render('farms/near', { farms, locations });
+      console.log(farms);
+    }
+  } else {
+    res.redirect('/produttori');
+  }
 });
 // end of searching -------------------------------
 

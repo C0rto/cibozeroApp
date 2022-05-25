@@ -1,5 +1,6 @@
-const { string } = require('joi');
+const { string, func } = require('joi');
 const mongoose = require('mongoose');
+const { cloudinary } = require('../cloudinary');
 const { Schema } = mongoose;
 
 const ImageSchema = new Schema({
@@ -48,6 +49,11 @@ const productSchema = new Schema({
   },
   image: ImageSchema,
   farm: [{ type: Schema.Types.ObjectId, ref: 'Farm' }],
+});
+
+// erase image from cloudinary postmiddleware
+productSchema.post('findOneAndDelete', async function (product) {
+  await cloudinary.uploader.destroy(product.image.filename);
 });
 
 const Product = mongoose.model('Product', productSchema);

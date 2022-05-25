@@ -15,6 +15,9 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 router.get(
   '/',
   catchAsync(async (req, res) => {
+    // hard function
+
+    // endof
     const farms = await Farm.find({});
     res.render('farms/index', { farms });
   })
@@ -119,7 +122,6 @@ router.post(
     product.image = { url: path, filename: filename };
     await farm.save();
     await product.save();
-    console.log(product);
     req.flash('success', `${product.name} aggiunto con successo!!!`);
     res.redirect(`/produttori/${farm._id}`);
   })

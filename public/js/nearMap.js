@@ -1,4 +1,7 @@
 mapboxgl.accessToken = mapToken;
+var currentLocationMarker = new mapboxgl.Marker({ color: 'red' }).setLngLat(
+  geo
+);
 
 const map = new mapboxgl.Map({
   container: 'map',
@@ -7,10 +10,21 @@ const map = new mapboxgl.Map({
   zoom: 8,
 });
 
+map.addControl(
+  new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true,
+    },
+    trackUserLocation: true,
+    showUserHeading: true,
+  })
+);
+
 map.on('load', () => {
   // Add a new source from our GeoJSON data and
   // set the 'cluster' option to true. GL-JS will
   // add the point_count property to your source data.
+  currentLocationMarker.addTo(map);
   map.addSource('aziende', {
     type: 'geojson',
     // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
