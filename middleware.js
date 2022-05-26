@@ -29,7 +29,6 @@ module.exports.validateReviews = (req, res, next) => {
     next();
   }
 };
-
 //------------------------------------------------- MIDDLEWARE PER VERIFICARE SE SI é PROPRIETARI E PER VALIDARE L'AZIENDA ----------------------------------------------------------------------------//
 module.exports.isOwner = async (req, res, next) => {
   const { id } = req.params;

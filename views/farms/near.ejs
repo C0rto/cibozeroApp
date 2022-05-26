@@ -3,6 +3,7 @@
   <%- include('../partials/header') %>
   <body style="background-color: #fcf8f2;">
     <%- include('../partials/navbar') %> <br />
+    <!-- body is here -->
     <div class="container-md mt-0 mb-5">
       <div class="container text-center my-2">
         <div id="map" style="width:100% ;height:25rem"></div>
@@ -31,21 +32,22 @@
        Esplora i migliori produttori intorno a te, acquista il miglior cibo a Km0. Mangia sano e preserva le piccole produzioni locali.
       </p>
     </div>
-
+<!-- STARTING CARD -->
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <% for (let farm of farms){ %>
         <div class="col">
           <div class="card shadow-sm border-0" >
-            <div>
               <img src="https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZmFybXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800" class="bd-placeholder-img card-img-top" alt="">
                 <span class="badge bg-success fs-6"  style="min-width:7rem ;position: absolute;top: 10%;left: 82%;transform: translate(-50%, -50%);"><b><%= farm.country %></b> <br> <small style="font-size:0.45rem ;"><%= farm.city %> </small></span>
-              </img>
-            </div>
+              </img> 
             <div class="card-body"> 
               <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title"><%= farm.name %> <br> <small style="font-size:0.65rem ;"><i>A circa <%= Math.floor(farm.dist.calculated/1000) %> Km da te </small></h5> 
-
+                <h5 class="card-title"><%= farm.name %> 
+                  <% if (farm.dist.calculated){ %>   
+                    <br> <small style="font-size:0.65rem ;">  
+                    <i>A circa <%= Math.floor(farm.dist.calculated/1000) %> Km da te </i></small></h5> 
+                  <% } %> 
                 <div class="btn">
                   <a
                     href="/produttori/<%= farm._id %> "

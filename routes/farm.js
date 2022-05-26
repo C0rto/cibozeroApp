@@ -5,12 +5,13 @@ const Farm = require('../models/farm');
 const Product = require('../models/products');
 const { isLoggedIn, isOwner, validateFarm } = require('../middleware');
 const multer = require('multer');
-const { storage } = require('../cloudinary/index');
+const { storage, cloudinary } = require('../cloudinary/index');
 const upload = multer({ storage });
 const { categories, country } = require('../helpers/datas');
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
+
 //------------------------------------------------- INDICE DI TUTTI I PRODUTTORI HOME PAGE PRODUTTORI ----------------------------------------------------------------------------//
 router.get(
   '/',
@@ -58,7 +59,7 @@ router.get(
       .populate({ path: 'reviews', populate: { path: 'author' } });
     if (!farmFound) {
       req.flash('error', 'Questa azienda non è più registrata su Cibozero');
-      res.redirect('/produttori');
+      return res.redirect('/produttori');
     }
     res.render('farms/details', { farmFound });
   })
@@ -124,6 +125,7 @@ router.post(
     await product.save();
     req.flash('success', `${product.name} aggiunto con successo!!!`);
     res.redirect(`/produttori/${farm._id}`);
+    console.log(product._id);
   })
 );
 //------------------------------------------------- ELIMINAZIONE DI UN SINGOLO PRODUTTORE ----------------------------------------------------------------------------//
@@ -133,12 +135,15 @@ router.delete(
   isOwner,
   catchAsync(async (req, res) => {
     const { id } = req.params;
-    const farmDeleted = await Farm.findByIdAndDelete(id);
+    const farmDeleted = await Farm.findByIdAndDelete(id).populate('products');
+    for (let i = 0; i < farmDeleted.products.length; i++) {
+      await cloudinary.uploader.destroy(farmDeleted.products[i].image.filename);
+    }
     req.flash(
       'success',
       'Hai annullato correttamente la tua iscrizione a Cibozero'
     );
-    res.redirect('/produttori');
+    return res.redirect('/produttori');
   })
 );
 

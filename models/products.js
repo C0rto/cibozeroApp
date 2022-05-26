@@ -1,17 +1,16 @@
-const { string, func } = require('joi');
 const mongoose = require('mongoose');
 const { cloudinary } = require('../cloudinary');
 const { Schema } = mongoose;
-
+// ------------------------------------------------------------------------------------
 const ImageSchema = new Schema({
   url: String,
   filename: String,
 });
-
+// ------------------------------------------------------------------------------------
 ImageSchema.virtual('thumbnail').get(function () {
   return this.url.replace('/upload', '/upload/w_150');
 });
-
+// ------------------------------------------------------------------------------------
 const productSchema = new Schema({
   name: {
     type: String,
@@ -50,11 +49,12 @@ const productSchema = new Schema({
   image: ImageSchema,
   farm: [{ type: Schema.Types.ObjectId, ref: 'Farm' }],
 });
-
+// ------------------------------------------------------------------------------------
 // erase image from cloudinary postmiddleware
-productSchema.post('findOneAndDelete', async function (product) {
-  await cloudinary.uploader.destroy(product.image.filename);
-});
+// productSchema.post('findOneAndDelete', async function (product) {
+//   await cloudinary.uploader.destroy(product.image.filename);
+// });
 
+// ------------------------------------------------------------------------------------
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;

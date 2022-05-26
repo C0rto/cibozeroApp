@@ -74,6 +74,7 @@ router.delete(
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const productDeleted = await Product.findByIdAndDelete(id);
+    await cloudinary.uploader.destroy(productDeleted.image.filename);
     req.flash(
       'success',
       `${productDeleted.name} è stato eliminato con successo!`
