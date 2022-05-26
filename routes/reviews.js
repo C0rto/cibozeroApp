@@ -37,7 +37,7 @@ router.delete(
     });
     const deletedReview = await Review.findByIdAndDelete(reviewId);
     req.flash('success', 'Recensione eliminata con successo');
-    res.redirect(`/produttori/${id}`);
+    return res.redirect(`/produttori/${id}`);
   })
 );
 

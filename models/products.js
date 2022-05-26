@@ -50,11 +50,7 @@ const productSchema = new Schema({
   farm: [{ type: Schema.Types.ObjectId, ref: 'Farm' }],
 });
 // ------------------------------------------------------------------------------------
-// erase image from cloudinary postmiddleware
-// productSchema.post('findOneAndDelete', async function (product) {
-//   await cloudinary.uploader.destroy(product.image.filename);
-// });
 
-// ------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const catchAsync = require('../helpers/catchAsync');
 const Product = require('../models/products');
+const Farm = require('../models/farm');
 const { isLoggedIn, isOwner } = require('../middleware');
 const { categories, country } = require('../helpers/datas');
 const multer = require('multer');
@@ -73,13 +74,17 @@ router.delete(
   '/:id',
   catchAsync(async (req, res) => {
     const { id } = req.params;
-    const productDeleted = await Product.findByIdAndDelete(id);
+    const productDeleted = await Product.findByIdAndDelete(id).populate('farm');
+    const farm = await Farm.findByIdAndUpdate(productDeleted.farm[0]._id, {
+      $pull: { products: id },
+    });
     await cloudinary.uploader.destroy(productDeleted.image.filename);
+    console.log(productDeleted.farm[0]._id);
     req.flash(
       'success',
       `${productDeleted.name} è stato eliminato con successo!`
     );
-    res.redirect('/prodotti');
+    return res.redirect('/prodotti');
   })
 );
 
