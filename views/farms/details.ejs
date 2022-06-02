@@ -4,12 +4,7 @@
   <link rel="stylesheet" href="/css/stars.css" />
 
   <body style="background-color:#fcf8f2;">
-    <%- include('../partials/navbar') %>
-    <div class=" text-white p-2 mb-2"  style="background-color: #415624">
-      <a href="/produttori" class="text-white" style="text-decoration: none">
-        < Indietro</a
-        >
-      </div>
+    <%- include('../partials/nav') %>
     <div class="container-md mb-3">
       <div class="row justify-content-md-center text-center">
         <h1><%= farmFound.name %></h1> 
@@ -31,7 +26,7 @@
               style="object-fit: cover; height: 26rem"
               class="img-fluid mb-3"
             />
-            <div id='map' style='width: 400px; height: 300px;'></div>   
+            <!-- <div id='map' style='width: 400px; height: 300px;'></div>    -->
           </div>
           <div
             class="bg-light p-3 my-3 border rounded"
@@ -147,6 +142,7 @@
           </div>
           <% } %>
         </div>
+        <div class="mobile__bottom mb-5"></div>
       </div>
     </div>
     <!-- reviews -->

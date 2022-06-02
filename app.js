@@ -18,7 +18,6 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const Farm = require('./models/farm');
 // --------------------------------------------------
 const User = require('./models/user');
-
 // ----------------------------------------------------------------
 const ExpressError = require('./helpers/ExpressError');
 // -----------------------------------------------------------------
@@ -26,6 +25,7 @@ const farmRoute = require('./routes/farm');
 const productRoute = require('./routes/products');
 const reviewRoute = require('./routes/reviews');
 const userRoute = require('./routes/user');
+// -----------------------------------------------------------------
 
 // DB MONGOOSE---------------------------------------------------------------------------------------
 mongoose.connect('mongodb://localhost:27017/123');
@@ -74,8 +74,6 @@ app.use((req, res, next) => {
 });
 // Routing-----------------------------------------------------------------
 app.use('/produttori', farmRoute);
-// Registrazione Produttori
-
 // Routing Recensioni
 app.use('/produttori/:id/recensione', reviewRoute);
 // Routing Prodotti
@@ -86,45 +84,6 @@ app.use('/', userRoute);
 app.get('/', (req, res) => {
   res.render('home');
 });
-//  routing for search location ---------------------------
-app.post('/', async (req, res) => {
-  const { city } = req.body;
-  if (city) {
-    const geodata = await geocoder
-      .forwardGeocode({
-        query: `${city}`,
-        limit: 1,
-      })
-      .send();
-    const locations = geodata.body.features[0].geometry.coordinates;
-    const farms = await db
-      .collection('farms')
-      .aggregate([
-        {
-          $geoNear: {
-            near: { type: 'Point', coordinates: locations },
-            distanceField: 'dist.calculated',
-            maxDistance: 70000,
-            spherical: true,
-          },
-        },
-      ])
-      .toArray();
-    if (!farms.length) {
-      req.flash(
-        'error',
-        'Mi dispiace, non ci sono produttori nella tua zona!!!'
-      );
-      res.redirect('/produttori');
-    } else {
-      res.render('farms/near', { farms, locations });
-      console.log(farms);
-    }
-  } else {
-    res.redirect('/produttori');
-  }
-});
-// end of searching -------------------------------
 
 // Routing 404 ------------------------------------------------------------------------
 app.all('*', (req, res, next) => {

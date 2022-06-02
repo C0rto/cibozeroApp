@@ -16,9 +16,6 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 router.get(
   '/',
   catchAsync(async (req, res) => {
-    // hard function
-
-    // endof
     const farms = await Farm.find({});
     res.render('farms/index', { farms });
   })
@@ -91,7 +88,7 @@ router.patch(
     const farmed = await Farm.findByIdAndUpdate(id, req.body, {
       runValidators: true,
     });
-    farmed.location = geodata.body.features[0].geometry;
+    farmed.geometry = geodata.body.features[0].geometry;
     await farmed.save();
     res.redirect(`/produttori/${farmed._id}`);
   })

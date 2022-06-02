@@ -3,12 +3,7 @@
   style="background: #567132"
 >
   <div class="container-fluid">
-    <img
-      src="/img/Logo_white.svg"
-      class="ms-2 mx-3"
-      style="width: 2.1rem"
-      alt=""
-    />
+    <img src="/img/Logo_white.svg" class="ms-2 mx-3" alt="" />
     <button
       class="navbar-toggler text-white"
       type="button"
@@ -25,7 +20,7 @@
       aria-labelledby="offcanvasNavbarLabel"
     >
       <div class="offcanvas-header" style="background: #567132">
-        <h1 class="text-white">Cibozero</h1>
+        <h1 class="text-white"><b>Cibozero</b></h1>
         <button
           type="button"
           class="btn-close text-white"
@@ -36,7 +31,7 @@
       <div class="offcanvas-body fs-5" style="background: #567132">
         <ul class="navbar-nav p-1 justify-content-start flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link active text-white" href="/">Home</a>
+            <a class="nav-link text-white" href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" href="/produttori">I Produttori</a>
@@ -49,12 +44,14 @@
         </ul>
         <div class="d-flex justify-content-end align-items-center">
           <% if (!currentUser) { %>
-          <a href="/login" class="btn btn-outline-light me-2"
-            ><small><b>login</b></small></a
+          <a href="/login" class="btn btn-sm btn-outline-light me-2"
+            ><small style="font-size: 0.55rem"><b>login</b></small></a
           >
           <% } else {%>
-          <a href="/logout" class="btn btn-outline-warning fs-6 me-2"
-            ><small><b><%= currentUser.name %> logout</b></small></a
+          <a href="/logout" class="btn btn-sm btn-outline-light me-2"
+            ><small style="font-size: 0.55rem"
+              ><b><%= currentUser.name %> logout</b></small
+            ></a
           >
           <% } %>
         </div>

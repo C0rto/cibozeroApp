@@ -2,7 +2,7 @@
 <html lang="en">
   <%- include('../partials/header') %>
   <body style="background-color: #fcf8f2;">
-    <%- include('../partials/navbar') %> <br />
+    <%- include('../partials/nav') %> <br />
     <!-- body is here -->
     <div class="container-md mt-0 mb-5">
       <div class="container text-center my-2">
@@ -70,7 +70,7 @@
         const farms = {features:<%- JSON.stringify(farms) %>};
         const geo = [<%-locations%>]
       </script>
-
+<script src='https://npmcdn.com/mapbox-gl-circle/dist/mapbox-gl-circle.min.js'></script>
     <script src="/js/nearMap.js"></script>
   </body>
 </html>

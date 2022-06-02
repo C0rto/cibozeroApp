@@ -2,22 +2,21 @@
 <html lang="en">
   <%- include('../partials/header') %>
   <body>
-    <%- include('../partials/navbar') %>
-    <h1 class="text-center my-4">Modulo di Registrazione</h1>
-    <div class="container">
-      <div class="row">
-        <div class="col-md d-flex justify-content-center mb-5">
-          <div class="" style="max-width: 32rem">
+    <%- include('../partials/nav') %>
+    <div class="container px-4 mt-5 pt-5 bg-white shadow-sm rounded" style="margin-top:8rem ;">
+      <div class="row p-5">
+        <h1 class="text-center mt-4 display-4 fw-bold" >Modulo di Registrazione</h1>
+        <div class="col-md p-3 m-4">   
             <form
               action="/registrati"
               method="POST"
-              class="needs-validation"
+              class="needs-validation "
               novalidate
             >
               <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
                 <input
                   type="text"
+                  placeholder="Username"
                   class="form-control"
                   name="username"
                   id="username"
@@ -26,20 +25,19 @@
                 <div class="valid-feedback">Perfetto!</div>
               </div>
               <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
                 <input
                   type="email"
+                  placeholder="Email"
                   class="form-control"
                   name="email"
                   id="email"
                   required
                 />
               </div>
-              <div class="valid-feedback">Perfetto!</div>
                 <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
                 <input
                   type="password"
+                  placeholder="Password"
                   class="form-control"
                   name="password"
                   id="password"
@@ -57,7 +55,6 @@
                 </button>
               </div>
             </form>
-          </div>
         </div>
       </div>
     </div>

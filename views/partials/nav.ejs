@@ -1,0 +1,80 @@
+<header class="header" id="header">
+  <div><%- include('flash') %></div>
+  <nav class="nav align-content-center">
+    <a href="#" class="nav__logo ms-4">
+      <img src="/img/Logo_total.svg" alt="" class="logo__size"
+    /></a>
+    <div class="nav__menu" id="nav-menu">
+      <div class="nav__list">
+        <div class="nav__item" id="nav-item">
+          <a href="/" class="nav__link">
+            <i class="bx bx-home-alt nav__icon"></i>
+            <span class="nav__name">Home</span>
+          </a>
+        </div>
+        <div class="nav__item" id="nav-item">
+          <a href="/produttori" class="nav__link">
+            <i class="bx bx-store nav__icon"></i>
+            <span class="nav__name">I produttori</span>
+          </a>
+        </div>
+        <div class="nav__item" id="nav-item">
+          <a href="/prodotti" class="nav__link" id="nav-item">
+            <i class="bx bx-compass nav__icon"></i>
+            <span class="nav__name">Tutto a Km0</span>
+          </a>
+        </div>
+        <div class="nav__item mobile__only">
+          <a href="#" class="nav__link">
+            <i class="bx bx-dots-horizontal-rounded nav__icon"></i>
+            <span class="nav__name">Altro</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- DROPDOWN MENù USER -->
+    <div class="navbar" style="max-width: 7rem">
+      <div class="nav-item dropdown">
+        <a
+          href="#"
+          class="nav-link dropdown-toggle"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          style="color: #567132; font-size: 1.5rem"
+        >
+          <small style="font-size: 0.75rem"
+            ><b
+              ><% if(currentUser){ %> <%=currentUser.username %> <% } %></b
+            ></small
+          >
+          <i class="bx bx-user"></i
+        ></a>
+        <ul
+          class="dropdown-menu shadow border-light"
+          style="margin-left: -8rem"
+          aria-labelledby="navbarScrollingDropdown"
+        >
+          <li></li>
+          <li>
+            <a class="dropdown-item" href="/cercaIntorno">Cambia Posizione</a>
+          </li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <div class="d-flex justify-content-end align-items-center">
+            <% if (!currentUser) { %>
+            <a href="/login" class="dropdown-item text-success"
+              ><small><b>Login</b></small></a
+            >
+            <% } else {%>
+            <a href="/logout" class="dropdown-item text-danger"
+              ><small><b>Logout</b></small></a
+            >
+            <% } %>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- flash -->

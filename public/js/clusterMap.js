@@ -1,10 +1,16 @@
 mapboxgl.accessToken = mapToken;
 
+// const bounds = [
+//   [2.89125, 48.484542], // Northeast coordinates
+//   [12.623, 41.515], // Southwest coordinates
+// ];
+
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/cort0/cl3ebgrmz000114p5jn8m5wy7',
   center: [12.623, 41.515],
-  zoom: 4,
+  zoom: 6,
+  // maxBounds: bounds,
 });
 
 map.on('load', () => {
@@ -107,3 +113,17 @@ map.on('load', () => {
     map.getCanvas().style.cursor = '';
   });
 });
+
+map.addControl(
+  new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true,
+    },
+    // When active the map will receive updates to the device's location as it changes.
+    trackUserLocation: true,
+    // Draw an arrow next to the location dot to indicate which direction the device is heading.
+    showUserHeading: true,
+  })
+);
+
+map.addControl(new mapboxgl.NavigationControl());

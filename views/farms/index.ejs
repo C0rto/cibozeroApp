@@ -1,75 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include('../partials/header') %>
-  <body style="background-color: #fcf8f2;">
-    <%- include('../partials/navbar') %> <br />
-     <!-- body is here -->
-    <div class="container-md mb-5">
-      <div class="container text-center my-2">
-        <div id="map" style="width:100% ;height:25rem"></div>
-        <form action="/" method="POST">
-          <div class="d-flex flex-row justify-content-center align-items-center bg-light px-4">
+  <body>
+    <%- include('../partials/nav') %> <br />
+    <!-- body is here -->
+    <div class="container-md mt-2">
+      <div class="container text-center my-2 border-light p-2">
+        <!-- <div id="map" style="width: 100%; height: 25rem"></div> -->
+        <!-- <form action="/" method="POST">
+          <div class="input-group my-2">
             <input
-              type="text"
-              class="form-control my-4 rounded-0"
-              placeholder="Cerca nella tua zona..."
-              name="city"
+              type="search"
               id="city"
-              style="width: 80%"
+              name="city"
+              class="form-control bg-light"
+              placeholder="Dove sei?"
             />
-            <button
-              type="submit"
-              class="btn btn-success text-center fs-6 rounded-0 px-2 "
-              style="width: 20%"
+            <span
+              class="input-group-text btn btn-sm btn-outline-primary"
+              id="city"
             >
-              Cerca
-            </button>
+              <button
+                type="submit"
+                class="btn btn-sm btn-outline-primary border-0"
+              >
+                Cerca
+              </button></span
+            >
           </div>
-     </form>
-      <h1 class="text-muted mt-4 mb-3">I produttori intorno a te</h1>
-      </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
-        nesciunt quam suscipit architecto omnis sed. Fugiat mollitia harum,
-        accusantium ipsum, accusamus ullam magnam iusto, neque sint debitis
-        consequuntur beatae nostrum. Nulla perspiciatis rem deserunt quaerat
-        consequatur dolorem?
-      </p>
-    </div>
-<!-- STARTING CARD -->
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <% for (let farm of farms){ %>
-        <div class="col">
-          <div class="card shadow-sm border-0">
-            <img src="https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZmFybXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800" class="bd-placeholder-img card-img-top" alt="">
-               <span class="badge bg-success fs-6"  style="min-width:7rem ;position: absolute;top: 10%;left: 82%;transform: translate(-50%, -50%);"><b><%= farm.country %></b> <br> <small style="font-size:0.45rem ;"><%= farm.city %> </small></span>
-            </img>
+        </form> -->
+        <!-- hero -->
+        <div class="px-4 pt-5 my-3 text-center text-theme">
+          <h1 class="display-4 fw-bold">I migliori produttori intorno a te</h1>
+          <div class="mx-auto">
+            <p class="lead mb-4">
+              Quickly design and customize responsive mobile-first sites with
+              Bootstrap, the world’s most popular front-end open source toolkit,
+              featuring Sass variables and mixins, responsive grid system,
+              extensive prebuilt components, and powerful JavaScript plugins.
+            </p>
+          </div>
+          <div class="overflow-hidden" style="max-height: 30vh"></div>
+        </div>
+        <!-- end of hero -->
 
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-              <h5 class="card-title"><%= farm.name %></h5>    
-                <div class="btn">
-                  <a
-                    href="/produttori/<%= farm.id %> "
-                    type="button"
-                    class="btn btn-sm btn-outline-success"
-                  >
-                    Vedi i Prodotti
-                  </a>
-                </div>
+        <!-- <h1 class="mt-5 mb-2"><b>I produttori intorno a te</b></h1>
+        <p class="mb-0">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
+          nesciunt quam suscipit architecto omnis sed. Fugiat mollitia harum,
+          accusantium ipsum, accusamus ullam magnam iusto, neque sint debitis
+          consequuntur beatae nostrum.
+        </p> -->
+      </div>
+    </div>
+    <!-- STARTING CARD -->
+    <div class="cards mt-3" id="product-cards">
+      <!-- <div class="row row-cols-md-4"> -->
+      <% for (let farm of farms){ %>
+      <div>
+        <div href="" class="cardy shadow">
+          <img
+            src="https://images.unsplash.com/photo-1550989460-0adf9ea622e2?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGZhcm0lMjBtYXJrZXR8ZW58MHx8MHx8&auto=format&fit=crop&w=700"
+            class="card__image"
+            alt=""
+          />
+          <div class="card__overlay">
+            <div class="card__header">
+              <svg class="card__arc" xmlns="http://www.w3.org/2000/svg">
+                <path />
+              </svg>
+              <div class="card__header-text">
+                <h3 class="card__title"><%= farm.name %></h3>
+                <span class="card__status"
+                  ><%= farm.country %> - <%= farm.city %></span
+                >
               </div>
+              <a
+                href="/produttori/<%= farm.id %> "
+                type="button"
+                class="classic-btn"
+              >
+                Entra
+              </a>
             </div>
+            <p class="card__description">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Asperiores, blanditiis?
+            </p>
           </div>
         </div>
-        <% } %>
       </div>
+      <% } %>
+      <!-- </div> -->
+      <div class="mobile__bottom mb-5"></div>
     </div>
     <%- include('../partials/footer') %>
-      <script>
-        const mapToken  = '<%- process.env.MAPBOX_TOKEN %>';
-        const farms = {features:<%- JSON.stringify(farms) %>} 
-      </script>
+    <script>
+      const mapToken  = '<%- process.env.MAPBOX_TOKEN %>';
+      const farms = {features:<%- JSON.stringify(farms) %>}
+    </script>
     <script src="/js/clusterMap.js"></script>
   </body>
 </html>

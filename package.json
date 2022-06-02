@@ -25,6 +25,8 @@
     "multer-storage-cloudinary": "^4.0.0",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^7.0.0"
+    "passport-local-mongoose": "^7.0.0",
+    "postcss-viewport-height-correction": "^1.1.1",
+    "vh-check": "^2.0.5"
   }
 }

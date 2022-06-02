@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('partials/header') %>
+  <body>
+    <div class="map-container ">
+      <div class="topper " id="close"><i style="font-size:3.5rem ;" class='bx bx-chevron-down bx-fade-down'></i></div>  
+      <div class="slide-structor">
+        <!-- MAPPA -->
+          <div id="map" style="display: block;;width: 100vw; height: 100vh"></div>
+          <!-- MAPPA -->
+          <div class="login slide-up" >
+            <div class="center">
+              <h3 class="form-title d-flex flex-column mt-0 mb-3" id="slide" >
+                <span><i style="font-size:2.5rem ;" class='bx bx-chevron-up bx-fade-up'></i></span>Cerca Intorno a te
+              </h3>
+            <div class="form-holder mt-3 shadow-sm">
+                <form action="/" method="POST" >
+                <select name="rangeDistance" id="rangeDistance" class="input text-center">
+                    <option value="10000">Entro 10 km</option>
+                    <option value="25000">Entro 25 km</option>
+                    <option value="50000">Entro 50 km</option>
+                    <option value="100000">Entro 100 km</option>
+                </select>
+                  <input
+                    type="search"
+                    class="input text-center"
+                    name="city"
+                    id="city"
+                    placeholder="Dove sei?"
+                  />
+                  <button class="special-btn">Cerca</button>
+                </div>
+              </div>
+            </form>    
+          </div> 
+        </div>
+            <div class="confirmation-button mb-0"><button onclick="history.back()" class=" full-btn rounded-0" style="width:100vw ;"><b>Annulla</b></button></div>
+      </div>
+  <!-- PAGE SCRIPT -->
+    <script src="/js/mobileFixer.js"></script>
+    <script src="/js/sliding.js"></script>
+    <script>
+      const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+      const farms = {features:<%- JSON.stringify(farms) %>}
+    </script>
+     <script src="/js/clusterMap.js"></script>
+  </body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
   <%- include('../partials/header') %>
   <body style="background-color:#fcf8f2;">
-    <%- include('../partials/navbar') %>
+    <%- include('../partials/nav') %>
     <div class="container my-4 p-3" style="max-width: 60rem">
       <h2 class="text-center mb-3"><b>Registrazione Produttore</b></h2>
       <img src="https://images.unsplash.com/photo-1589923188900-85dae523342b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8ZmFybSUyMHdvcmtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60" class="img-fluid shadow-sm rounded" style="object-fit:cover ; height: 27rem;
@@ -13,21 +13,19 @@
         class="needs-validation p-3"
         novalidate
       >
-    
         <!-- prima row di dati -->
         <h4 class="mt-4 mb-2"><b>La tua Azienda</b></h4>
         <p class="mb-4">I dati fondamentali della tua azienda saranno presenti nella tua vetrina su cibozero e serviranno ai clienti per informarsi sulla tua azienda.</p>
         <div class="row mb-2">
-          <div class="col-md-6">
-            <label for="name" class="form-label"><b>Azienda</b></label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Scrivi il nome dell'Azienda"
-              class="form-control"
-              required
-            />
+          <div class="form-outline ">
+              <label for="name" class="form-label">Azienda</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                class="form-control"
+                required
+              />  
           </div>
           <div class="col-md-6">
             <label for="holder" class="form-label"><b>Titolare</b></label>
