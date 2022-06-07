@@ -8,6 +8,18 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
+  city: { type: String, required: true },
+  geometry: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
 });
 UserSchema.plugin(passportLocalMongoose);
 

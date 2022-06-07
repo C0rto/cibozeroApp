@@ -1,7 +1,7 @@
 <header class="header" id="header">
   <div><%- include('flash') %></div>
   <nav class="nav align-content-center">
-    <a href="#" class="nav__logo ms-4">
+    <a href="#" class="nav__logo p-4">
       <img src="/img/Logo_total.svg" alt="" class="logo__size"
     /></a>
     <div class="nav__menu" id="nav-menu">
@@ -43,11 +43,6 @@
           aria-expanded="false"
           style="color: #567132; font-size: 1.5rem"
         >
-          <small style="font-size: 0.75rem"
-            ><b
-              ><% if(currentUser){ %> <%=currentUser.username %> <% } %></b
-            ></small
-          >
           <i class="bx bx-user"></i
         ></a>
         <ul
@@ -56,19 +51,26 @@
           aria-labelledby="navbarScrollingDropdown"
         >
           <li></li>
+          <% if(currentUser){ %>
+          <li class="mb-2">
+            <p class="m-3" style="font-size: x-small">
+              Ciao, <%=currentUser.username %>
+            </p>
+          </li>
+          <% } %>
           <li>
             <a class="dropdown-item" href="/cercaIntorno">Cambia Posizione</a>
           </li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><a class="dropdown-item" href="#">La tua lista Spesa</a></li>
           <li><hr class="dropdown-divider" /></li>
           <div class="d-flex justify-content-end align-items-center">
             <% if (!currentUser) { %>
             <a href="/login" class="dropdown-item text-success"
-              ><small><b>Login</b></small></a
+              ><small><b>Accedi</b></small></a
             >
             <% } else {%>
             <a href="/logout" class="dropdown-item text-danger"
-              ><small><b>Logout</b></small></a
+              ><small><b>Esci</b></small></a
             >
             <% } %>
           </div>

@@ -12,6 +12,15 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
+// MONGOSE CONNECTION
+const mongoose = require('mongoose');
+// -------------------------------------------------------------------------------
+mongoose.connect('mongodb://localhost:27017/123');
+const db = mongoose.connection;
+db.on('Error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('Database Connected');
+});
 //------------------------------------------------- INDICE DI TUTTI I PRODUTTORI HOME PAGE PRODUTTORI ----------------------------------------------------------------------------//
 router.get(
   '/',
@@ -20,6 +29,7 @@ router.get(
     res.render('farms/index', { farms });
   })
 );
+
 //------------------------------------------------- REGISTRAZIONE DI UN SINGOLO PRODUTTORE ----------------------------------------------------------------------------//
 router.get('/registrazione', isLoggedIn, (req, res) => {
   res.render('farms/new', { country });

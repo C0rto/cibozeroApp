@@ -18,6 +18,7 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const Farm = require('./models/farm');
 // --------------------------------------------------
 const User = require('./models/user');
+const { isLoggedIn } = require('./middleware');
 // ----------------------------------------------------------------
 const ExpressError = require('./helpers/ExpressError');
 // -----------------------------------------------------------------
@@ -63,8 +64,9 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 // app.use intercetta tutte le richieste e risponde a tutte, ci permette di impostare un middleware di locals, che permette di accedere a moduli all'interno delle routes
 app.use((req, res, next) => {
-  // se req.originalUrl non include i path login o la home allora reindirizza la sessione a req.originalUrl,
-  if (!['/login', '/'].includes(req.originalUrl)) {
+  // se req.originalUrl non include i path login o la home allora reindirizza la sessione a req.originalUrl, aggiunger il path '/' in caso di esclusione home
+
+  if (!['/login'].includes(req.originalUrl)) {
     req.session.returnTo = req.originalUrl;
   }
   res.locals.currentUser = req.user;
@@ -81,9 +83,22 @@ app.use('/prodotti', productRoute);
 // Routing Registrazione Utente
 app.use('/', userRoute);
 // Routing Home
-app.get('/', (req, res) => {
-  res.render('home');
-});
+// app.get('/', isLoggedIn, async (req, res) => {
+//   const farms = await db
+//     .collection('farms')
+//     .aggregate([
+//       {
+//         $geoNear: {
+//           near: { type: 'Point', coordinates: req.user.geometry.coordinates },
+//           distanceField: 'dist.calculated',
+//           maxDistance: 50000,
+//           spherical: true,
+//         },
+//       },
+//     ])
+//     .toArray();
+//   res.render('farms/index', { farms });
+// });
 
 // Routing 404 ------------------------------------------------------------------------
 app.all('*', (req, res, next) => {

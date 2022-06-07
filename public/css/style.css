@@ -20,6 +20,7 @@
   --title-color: hsl(var(--hue), 12%, 15%);
   --text-color: hsl(var(--hue), 8%, 35%);
   --body-color: #fcf8f2;
+  --body-color-2: #fafbff;
   --container-color: #fff;
   /*========== Font and typography ==========*/
   --body-font: 'Open Sans', sans-serif;
@@ -39,6 +40,9 @@
 .text-theme {
   color: var(--40-color);
 }
+.bg-theme {
+  background-color: var(--first-color);
+}
 
 @media screen and (min-width: 968px) {
   :root {
@@ -47,6 +51,13 @@
   }
   .mobile_bottom {
     height: 5rem;
+  }
+  /* HERO */
+  .hero-section-farm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -99,13 +110,6 @@ img {
 .section__height {
   height: 100vh;
 }
-
-/*=============== LAYOUT ===============*/
-/* .container {
-  max-width: 968px;
-  margin-left: 1rem;
-  margin-right: 1rem;
-} */
 
 /*=============== HEADER ===============*/
 .header {
@@ -237,7 +241,7 @@ img {
     padding: 7rem 0 2rem;
   }
   .nav {
-    height: calc(var(--header-height) + 2.5rem); /* 4.5rem */
+    height: calc(var(--header-height) + 1rem); /* 4.5rem */
     justify-content: space-between;
   }
   .nav__img {
@@ -269,10 +273,9 @@ img {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
   margin: 4rem 5vw;
-  /* padding: 10px; */
   list-style-type: none;
 }
 
@@ -287,11 +290,11 @@ img {
 
 .card__image {
   width: 100%;
-  height: 20rem;
+  max-height: 12rem;
   object-fit: cover;
 }
 
-.card__overlay {
+/* .card__overlay {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -305,7 +308,7 @@ img {
 
 .cardy:hover .card__overlay {
   transform: translateY(0);
-}
+} */
 
 .card__header {
   position: relative;
@@ -315,8 +318,8 @@ img {
   gap: 2em;
   padding: 2em;
   background-color: var(--surface-color);
-  transform: translateY(-100%);
-  transition: 0.2s ease-in-out;
+  /* transform: translateY(-100%);
+  transition: 0.2s ease-in-out; */
 }
 
 .card__arc {
@@ -369,11 +372,15 @@ img {
   overflow: hidden;
 }
 
+.card-w {
+  max-width: 25rem;
+}
+
 /* END OF CARD SECTION */
 
 .classic-btn {
   background-color: #567132;
-  color: rgba(256, 256, 256, 0.7);
+  color: rgba(256, 256, 256, 0.9);
   border: 0;
   border-radius: 15px;
   display: block;
@@ -396,7 +403,7 @@ img {
 
 .full-btn {
   background-color: #567132;
-  color: rgba(256, 256, 256, 0.7);
+  color: rgba(256, 256, 256, 0.9);
   border: 0;
   border-radius: 15px;
   display: block;
@@ -415,4 +422,92 @@ img {
 .full-btn:hover {
   transition: all 0.3s ease;
   background-color: #34441e;
+}
+
+/* navigation */
+
+.farm-menu {
+  position: relative;
+  display: block;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 40px;
+  transform: scale(1.2);
+  overflow: hidden;
+}
+
+.farm-menu a {
+  position: relative;
+  text-decoration: none;
+  color: #567132;
+  font-family: var(--body-font);
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  display: inline-block;
+  /* width: 100px; */
+  /* padding: 10px; */
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.farm-menu a b {
+  position: relative;
+  top: 70px;
+  transition: 0.3s ease top;
+}
+
+.farm-menu a i {
+  position: relative;
+  left: 25%;
+  transition: 0.3s ease left;
+}
+
+.farm-menu span {
+  position: absolute;
+  /* width: 100px; */
+  background-color: var(--body-color);
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  border-radius: 50px;
+  z-index: 1;
+  transition: 0.3s ease left;
+}
+
+.farm-menu a:hover b {
+  top: 0;
+}
+
+.farm-menu a:hover i {
+  left: 0;
+}
+
+.farm-menu a:nth-child(1):hover ~ span {
+  left: 10px;
+}
+
+.farm-menu a:nth-child(2):hover ~ span {
+  left: 114px;
+}
+
+.farm-menu a:nth-child(3):hover ~ span {
+  left: 218px;
+}
+
+#ytd-url {
+  display: block;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 10px 14px;
+  margin: 20px;
+  color: #fff;
+  font-family: var(--body-font);
+  font-size: 14px;
+  text-decoration: none;
+  background-color: #53588b;
+  border-radius: 4px;
+  box-shadow: 0 10px 20px -5px rgba(83, 88, 139, 0.3);
+  z-index: 125;
 }

@@ -1,14 +1,17 @@
 const express = require('express');
-const User = require('../models/user');
 const router = express.Router();
 const catchAsync = require('../helpers/catchAsync');
 const passport = require('passport');
 const Farm = require('../models/farm');
+const User = require('../models/user');
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
-const mongoose = require('mongoose');
 const { isLoggedIn } = require('../middleware');
+
+//------------------------------------------------- MONGOOSE ----------------------------------------------------------------------------//
+
+const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost:27017/123');
 const db = mongoose.connection;
@@ -24,8 +27,19 @@ router.post(
   '/registrati',
   catchAsync(async (req, res, next) => {
     try {
-      const { username, email, password } = req.body;
-      const user = new User({ email, username });
+      const { username, email, password, city } = req.body;
+      const geodata = await geocoder
+        .forwardGeocode({
+          query: `${city}`,
+          limit: 1,
+        })
+        .send();
+      const user = new User({
+        email,
+        username,
+        city,
+        geometry: geodata.body.features[0].geometry,
+      });
       const newUser = await User.register(user, password);
       req.login(newUser, (e) => {
         if (e) return next(e);
@@ -50,16 +64,38 @@ router.post(
   }),
   (req, res) => {
     req.flash('success', 'Bentornato su Cibozero');
-    const redirectUrl = req.session.returnTo || '/produttori';
+    const redirectUrl = req.session.returnTo || '/';
+    console.log(req.session);
     delete req.session.returnTo;
     res.redirect(redirectUrl);
   }
 );
+
+//------------------------------------------------- PRODUTTORI IN ZONA PER UTENTE ----------------------------------------------------------------------------//
+
+router.get('/', isLoggedIn, async (req, res) => {
+  const farms = await db
+    .collection('farms')
+    .aggregate([
+      {
+        $geoNear: {
+          near: { type: 'Point', coordinates: req.user.geometry.coordinates },
+          distanceField: 'dist.calculated',
+          maxDistance: 100000,
+          spherical: true,
+        },
+      },
+    ])
+    .toArray();
+  console.log(req.user.geometry.coordinates);
+  res.render('farms/index', { farms });
+});
+
 //------------------------------------------------- LOGOUT DI UN SINGOLO UTENTE ----------------------------------------------------------------------------//
 router.get('/logout', (req, res) => {
   req.logout();
   req.flash('success', 'Perfetto adesso sei scollegato');
-  res.redirect('/produttori');
+  res.redirect('/');
 });
 
 //------------------------------------------------- RICERCA POSIZIONE DELL'UTENTE ----------------------------------------------------------------------------//
@@ -78,6 +114,11 @@ router.post('/', async (req, res) => {
       })
       .send();
     const locations = geodata.body.features[0].geometry.coordinates;
+    // take the position and set it to the user
+    const userPos = await User.findById(req.user._id);
+    userPos.geometry = geodata.body.features[0].geometry;
+    await userPos.save();
+    // save the position to the user geometry
     const farms = await db
       .collection('farms')
       .aggregate([
@@ -91,19 +132,17 @@ router.post('/', async (req, res) => {
         },
       ])
       .toArray();
-
     if (!farms.length) {
       req.flash(
         'error',
-        'Mi dispiace, non ci sono produttori nella tua zona!!!'
+        'Mi dispiace, non ci sono ancora produttori nella tua zona!!! Ti mostriamo quelli più vicini'
       );
       res.redirect('/produttori');
     } else {
       res.render('farms/near', { farms, locations });
-      console.log(farms);
     }
   } else {
-    res.redirect('/produttori');
+    res.redirect('/cercaintorno');
   }
 });
 
