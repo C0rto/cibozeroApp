@@ -9,7 +9,7 @@
  style="object-fit: cover; max-height: 20rem;width:100vw ;"
  class="img-fluid"
  />
-  <div class="bg-theme text-white mt-0 p-3 d-flex flex-column align-items-center">
+  <div class="bg-theme text-white mt-0 p-3 d-flex flex-column align-items-center"> 
     <h1 class="display-6 fw-bold text-center "><%= farmFound.name %></h1> 
       <h3 class="text-center"><%= farmFound.country %> - <small> <%= farmFound.city %></small>
           </h3>
@@ -24,6 +24,11 @@
             </p>
     </div>
 <!--END OF TAB -->
+      <% if(currentUser){ %> 
+            <form action="/produttori/<%= farmFound._id %>" method="POST">
+              <button  type="submit" class="icon-btn" i><i class="bx bxs-heart fav-icon" id="heart"></i></button>
+            </form>
+      <% } %> 
           <!-- EDIT BUTTON ON THE GO -->
     <div class="d-flex justify-content-center my-3 mb-2">
             <% if (currentUser && farmFound.owner.equals(currentUser)){ %> 
@@ -94,9 +99,8 @@
     <div class="row justify-content-md-center text-center">
       <div class="row-md">
         <div class="d-flex flex-column align-items-center ">
-          
           <div class="container-md my-3 mb-5">
-   <p><%= farmFound.description %></p>
+   <p class="my-3"><%= farmFound.description %></p>
    <div class="mt-3 mb-4">
      <a
              href="/produttori/<%= farmFound._id %>/prodotto/nuovo "
@@ -107,30 +111,49 @@
       <div class="row">
         <div class="slicky">
           <% for (let product of farmFound.products){ %>
-          <div class="col d-flex my-2 justify-content-center mx-2">
+          <div class="col d-flex justify-content-center my-2 mx-2">
             <a
               href="/prodotti/<%= product._id %> "
               class="text-dark text-capitalize"
               style="text-decoration: none"
             >
+            
               <div
-                class="card border-light shadow-sm"
-                style="width: 13.5rem; border-radius: 0.75rem"
+                class="product-card card border-light shadow-sm"
+                
               >
                 <img
                   src="<%= product.image.thumbnail %> "
-                  class="card-img-top my-3 rounded"
-                  style="width:180px;height:150px;margin:auto;object-fit: cover;"
+                  class="card-img-top mb-3"
+                  style="width:240px;height:180px;margin:auto;object-fit: cover;"
                 />
-                <div class="card-body">
-                  <div class="d-flex flex-column">
-                    <h6 class="card-title text-center"><%= product.name %></h6>
-                    <p
-                      class="list-group-item text-center border-light bg-success text-white"
-                      
-                    >
-                      <%= product.price %> <small><i>€ al Kg</i></small>
+                <div class="card-body p-3">
+                  <div class="d-flex flex-row justify-content-between align-content-center align-items-center">
+                    <p class="card-title pb-0 mb-0"><%= product.name %></p>
+                    <p class="card-title fs-5  pb-0 mb-0">
+                     <b>€<%= product.price %></b>
                     </p>
+                  </div>
+                  <div class="d-flex align-content-center align-items-center flex-row my-3 mb-4" style="font-size: x-small;">
+                    <i class="material-symbols-outlined text-muted mx-1" style="font-size: 0.9rem;">agriculture</i>
+                    <p class="text-muted pb-0 mb-0"><%= farmFound.name %></p>
+                  </div>
+                  <div class="border rounded p-2 card-interactive d-flex flex-row align-items-center justify-content-between">
+<span class="material-symbols-outlined mx-0">
+favorite
+<div class="vr"></div>
+</span>
+<div class="d-flex align-items-center ">
+  <span class="material-symbols-outlined" style="font-size:0.9rem ;">
+add
+</span>
+  <span class="material-symbols-outlined mx-4">
+  shopping_basket
+  </span>
+  <span class="material-symbols-outlined" style="font-size:0.9rem ;">
+remove
+</span>
+</div>
                   </div>
                 </div>
               </div>
@@ -145,12 +168,13 @@
         </div>
       </div>
     </div>
-  <!-- REVIEWS SECTION -->
+ 
+  <!-- MODAL BODY -->
+     <% if(currentUser){ %> 
+       <!-- REVIEWS SECTION -->
   <div class="d-flex justify-content-center">
     <button type="button" class="classic-btn px-4" style="max-width:14rem ;" data-bs-toggle="modal" data-bs-target="#reviews" >Lascia una recensione</button>
   </div>
-  <!-- MODAL BODY -->
-     <% if(currentUser){ %> 
   <div class="modal fade" id="reviews" tabindex="-1" aria-labelledby="reviewsLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -206,10 +230,8 @@
   <!-- END OF REVIEW -->
 
         <% if(farmFound.reviews.length){ %> 
-          <div class="container mt-5 my-3  ">
-            <div class="d-flex flex-column  justify-content-center mx-2">
-
-
+          <div class="d-flex justify-content-center mt-5 my-3">
+            <div class="col-sm mx-2" style="max-width:650px ;margin: auto;">
               <% for(let review of farmFound.reviews ){ %>
               <div class="container">
                 <div class="row p-2">
@@ -238,8 +260,13 @@
     <%- include('../partials/footer') %>
     <!-- SCRIPT FOR MAP AND GEOCODING -->
       <script>
+
+
         const mapToken  = '<%- process.env.MAPBOX_TOKEN %>';
         const farm = <%- JSON.stringify(farmFound) %>;
+
+
+
       </script>
     <!-- <script src="/js/showMap.js"></script> -->
   </body>

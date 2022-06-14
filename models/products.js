@@ -23,6 +23,11 @@ const productSchema = new Schema({
     required: true,
     min: 0,
   },
+  stock: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
   season: {
     type: String,
     lowercase: true,
@@ -49,6 +54,7 @@ const productSchema = new Schema({
   image: ImageSchema,
   farm: [{ type: Schema.Types.ObjectId, ref: 'Farm' }],
 });
+
 // ------------------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------------------

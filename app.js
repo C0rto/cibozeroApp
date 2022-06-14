@@ -72,6 +72,7 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
+  res.locals.welcome = req.flash('welcome');
   next();
 });
 // Routing-----------------------------------------------------------------
@@ -82,23 +83,6 @@ app.use('/produttori/:id/recensione', reviewRoute);
 app.use('/prodotti', productRoute);
 // Routing Registrazione Utente
 app.use('/', userRoute);
-// Routing Home
-// app.get('/', isLoggedIn, async (req, res) => {
-//   const farms = await db
-//     .collection('farms')
-//     .aggregate([
-//       {
-//         $geoNear: {
-//           near: { type: 'Point', coordinates: req.user.geometry.coordinates },
-//           distanceField: 'dist.calculated',
-//           maxDistance: 50000,
-//           spherical: true,
-//         },
-//       },
-//     ])
-//     .toArray();
-//   res.render('farms/index', { farms });
-// });
 
 // Routing 404 ------------------------------------------------------------------------
 app.all('*', (req, res, next) => {

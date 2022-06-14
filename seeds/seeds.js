@@ -31,7 +31,7 @@ const seedDB = async () => {
       country: `${cities[random1000].regione.nome}`,
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam dolores vero perferendis laudantium, consequuntur voluptatibus nulla architecto, sit soluta esse iure sed labore ipsam a cum nihil atque molestiae deserunt!',
-      owner: '627a8a08e8f6dae31a5f1ae7',
+      owner: '62a1cb94c3e499ae929f1bec',
       geometry: {
         type: 'Point',
         coordinates: [geo[random1000].lng, geo[random1000].lat],

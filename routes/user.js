@@ -44,7 +44,7 @@ router.post(
       req.login(newUser, (e) => {
         if (e) return next(e);
         req.flash('success', 'Benvenuto su Cibozero');
-        res.redirect('/produttori');
+        res.redirect('/');
       });
     } catch (e) {
       req.flash('error', e.message);
@@ -63,9 +63,9 @@ router.post(
     failureRedirect: 'login',
   }),
   (req, res) => {
-    req.flash('success', 'Bentornato su Cibozero');
-    const redirectUrl = req.session.returnTo || '/';
-    console.log(req.session);
+    req.flash('welcome', 'Bentornato su Cibozero');
+    // req.session.returnTo || to add for a redirect in function of previus visit
+    const redirectUrl = '/';
     delete req.session.returnTo;
     res.redirect(redirectUrl);
   }
@@ -87,9 +87,10 @@ router.get('/', isLoggedIn, async (req, res) => {
       },
     ])
     .toArray();
-  console.log(req.user.geometry.coordinates);
   res.render('farms/index', { farms });
 });
+
+// to use phone --------------
 
 //------------------------------------------------- LOGOUT DI UN SINGOLO UTENTE ----------------------------------------------------------------------------//
 router.get('/logout', (req, res) => {
@@ -102,7 +103,6 @@ router.get('/logout', (req, res) => {
 router.get('/cercaintorno', isLoggedIn, async (req, res) => {
   const farms = await Farm.find({});
   res.render('cercaIntorno', { farms });
-  console.log(req.user);
 });
 router.post('/', async (req, res) => {
   const { city, rangeDistance } = req.body;
@@ -137,12 +137,22 @@ router.post('/', async (req, res) => {
         'error',
         'Mi dispiace, non ci sono ancora produttori nella tua zona!!! Ti mostriamo quelli più vicini'
       );
-      res.redirect('/produttori');
+      return res.redirect('/produttori');
     } else {
-      res.render('farms/near', { farms, locations });
+      res.render('farms/index', { farms });
     }
+  }
+});
+
+// Fav Path to add a farm to user's fav point
+router.get('/favorites', isLoggedIn, async (req, res) => {
+  const user = await User.findById(req.user.id);
+  const farms = await Farm.find({ _id: { $in: user.favorites } });
+  if (!user.favorites.length) {
+    req.flash('error', 'Non hai ancora preferiti');
+    return res.redirect('/');
   } else {
-    res.redirect('/cercaintorno');
+    return res.render('users/favorites', { user, farms });
   }
 });
 

@@ -20,25 +20,25 @@
   </symbol>
 </svg>
 
+<!-- SUCCESS -->
 <% if(success && success.length){ %>
-<div class="alert text-white d-flex align-items-center alert-dismissible fade show mb-0 rounded-0" style="background-color: #567132;z-index: 9999;" role="alert">
-  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-  <div>
+<div class="alert text-white d-flex align-items-center alert-dismissible fade show mb-0 rounded-0 p-1" style="background-color: #567132;z-index: 9999;" role="alert">
+  <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+  <div class="flash-msg">
    <%= success %>
   </div>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <button type="button" class="btn-close" style="padding:0.45rem 1rem;font-size: 0.65rem;" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 </div>
 <% } %>
-
-
+<!-- ERROR -->
 <% if(error && error.length){ %>
-<div class="alert alert-danger d-flex align-items-center alert-dismissible fade show mb-0 rounded-0" style="z-index:9999 ;" role="alert">
-  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-  <div>
+<div class="alert alert-danger d-flex align-items-center alert-dismissible fade show mb-0 rounded-0 p-1" style="z-index:9999 ;" role="alert">
+  <svg class="bi flex-shrink-0 me-2" width="18" height="18" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+  <div class="flash-msg">
    <%= error %>
   </div>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  <button type="button" class="btn-close" style="padding:0.45rem 1rem ;font-size: 0.65rem;" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
   
 </div>

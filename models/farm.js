@@ -4,6 +4,8 @@ const Review = require('./reviews');
 const Product = require('./products');
 const opts = { toJSON: { virtuals: true } };
 const { cloudinary } = require('../cloudinary');
+const User = require('./user');
+
 // ------------------------------------------------------------------------------------
 const farmSchema = new Schema(
   {
@@ -51,6 +53,10 @@ farmSchema.virtual('properties.popUpMarkup').get(function () {
 farmSchema.post('findOneAndDelete', async function (farm) {
   if (farm.products.length || farm.reviews.lenght) {
     await Product.deleteMany({ _id: { $in: farm.products } });
+    // destroy media from cloudinary when a user signout
+    for (let i = 0; i < farmDeleted.products.length; i++) {
+      await cloudinary.uploader.destroy(farmDeleted.products[i].image.filename);
+    }
     await Review.deleteMany({ _id: { $in: farm.reviews } });
     console.log(farm.products);
   }

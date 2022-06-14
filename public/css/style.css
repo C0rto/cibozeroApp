@@ -1,6 +1,7 @@
 /*=============== GOOGLE FONTS ===============*/
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Open+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&display=swap');
 
 /*=============== VARIABLES CSS ===============*/
 :root {
@@ -23,7 +24,7 @@
   --body-color-2: #fafbff;
   --container-color: #fff;
   /*========== Font and typography ==========*/
-  --body-font: 'Open Sans', sans-serif;
+  --body-font: 'Barlow', sans-serif;
   --title-font: 'Lato', sans-serif;
   --h1-font-size: 1.5rem;
   --nav-font-size: 1.325rem;
@@ -39,6 +40,9 @@
 
 .text-theme {
   color: var(--40-color);
+}
+.title-font {
+  font-family: var(--title-font);
 }
 .bg-theme {
   background-color: var(--first-color);
@@ -60,7 +64,6 @@
     transform: translate(-50%, -50%);
   }
 }
-
 /*=============== BASE ===============*/
 * {
   box-sizing: border-box;
@@ -273,7 +276,7 @@ img {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
   margin: 4rem 5vw;
   list-style-type: none;
@@ -290,25 +293,9 @@ img {
 
 .card__image {
   width: 100%;
-  max-height: 12rem;
+  max-height: 10rem;
   object-fit: cover;
 }
-
-/* .card__overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  border-radius: calc(var(--curve) * 1px);
-  background-color: var(--surface-color);
-  transform: translateY(100%);
-  transition: 0.2s ease-in-out;
-}
-
-.cardy:hover .card__overlay {
-  transform: translateY(0);
-} */
 
 .card__header {
   position: relative;
@@ -318,8 +305,6 @@ img {
   gap: 2em;
   padding: 2em;
   background-color: var(--surface-color);
-  /* transform: translateY(-100%);
-  transition: 0.2s ease-in-out; */
 }
 
 .card__arc {
@@ -330,12 +315,7 @@ img {
   right: 0;
   z-index: 1;
 }
-
-.cardy:hover .card__header {
-  transform: translateY(0);
-}
-
-.card__thumb {
+/ .card__thumb {
   flex-shrink: 0;
   width: 50px;
   height: 50px;
@@ -348,32 +328,15 @@ img {
   color: #6a515e;
 }
 
-.card__tagline {
-  display: block;
-  margin: 1em 0;
-  font-family: 'MockFlowFont';
-  font-size: 0.8em;
-  color: #d7bdca;
-}
-
 .card__status {
   font-size: 0.8em;
   color: #d7bdca;
 }
 
-.card__description {
-  padding: 0 2em 2em;
-  margin: 0;
-  color: #d7bdca;
-  font-family: 'MockFlowFont';
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-}
-
 .card-w {
   max-width: 25rem;
+  background-color: var(--surface-color);
+  border-radius: calc(var(--curve) * 1px);
 }
 
 /* END OF CARD SECTION */
@@ -424,90 +387,20 @@ img {
   background-color: #34441e;
 }
 
-/* navigation */
-
-.farm-menu {
-  position: relative;
-  display: block;
-  background-color: #ffffff;
-  padding: 10px;
-  border-radius: 40px;
-  transform: scale(1.2);
-  overflow: hidden;
+.icon-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+}
+.fav-icon {
+  color: white;
+  transition: 0.3s ease-in;
+}
+.fav-icon-on {
+  color: red;
+  transition: 0.3s ease-in;
 }
 
-.farm-menu a {
-  position: relative;
-  text-decoration: none;
-  color: #567132;
-  font-family: var(--body-font);
-  font-size: 12px;
-  line-height: 1;
-  text-align: center;
-  display: inline-block;
-  /* width: 100px; */
-  /* padding: 10px; */
-  box-sizing: border-box;
-  z-index: 2;
-}
-
-.farm-menu a b {
-  position: relative;
-  top: 70px;
-  transition: 0.3s ease top;
-}
-
-.farm-menu a i {
-  position: relative;
-  left: 25%;
-  transition: 0.3s ease left;
-}
-
-.farm-menu span {
-  position: absolute;
-  /* width: 100px; */
-  background-color: var(--body-color);
-  top: 10px;
-  bottom: 10px;
-  left: 10px;
-  border-radius: 50px;
-  z-index: 1;
-  transition: 0.3s ease left;
-}
-
-.farm-menu a:hover b {
-  top: 0;
-}
-
-.farm-menu a:hover i {
-  left: 0;
-}
-
-.farm-menu a:nth-child(1):hover ~ span {
-  left: 10px;
-}
-
-.farm-menu a:nth-child(2):hover ~ span {
-  left: 114px;
-}
-
-.farm-menu a:nth-child(3):hover ~ span {
-  left: 218px;
-}
-
-#ytd-url {
-  display: block;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  padding: 10px 14px;
-  margin: 20px;
-  color: #fff;
-  font-family: var(--body-font);
-  font-size: 14px;
-  text-decoration: none;
-  background-color: #53588b;
-  border-radius: 4px;
-  box-shadow: 0 10px 20px -5px rgba(83, 88, 139, 0.3);
-  z-index: 125;
+.flash-msg {
+  font-size: 0.65rem;
 }

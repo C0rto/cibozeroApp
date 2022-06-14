@@ -8,7 +8,7 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
-  city: { type: String, required: true },
+  city: { type: String },
   geometry: {
     type: {
       type: String,
@@ -20,6 +20,7 @@ const UserSchema = new Schema({
       required: true,
     },
   },
+  favorites: [{ type: Schema.Types.ObjectId, ref: 'Farm' }],
 });
 UserSchema.plugin(passportLocalMongoose);
 

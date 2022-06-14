@@ -1,0 +1,52 @@
+<% if(welcome && welcome.length){ %>
+<div
+  class="d-flex align-items-center justify-content-center"
+  style="
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    max-width: 400px;
+  "
+>
+  <div class="alert" role="alert">
+    <div class="modal-content rounded-4 shadow border-light">
+      <div class="modal-body p-4">
+        <h2 class="fw-bold mb-1"><%= welcome %></h2>
+        <h6 class="mb-5">
+          <small>La parola d'ordine qui è Km Zero!</small>
+        </h6>
+        <ul
+          class="d-grid gap-4 my-3 list-unstyled align-items-center justify-content-center"
+        >
+          <li class="d-flex flex-row justify-content-center gap-4">
+            <div>
+              <i class="bx bx-map bi flex-shrink-0 fs-2"></i>
+              <h6 class="mb-0">Solo Prodotti a Km Zero</h6>
+              <small>Ti proponiamo solo il meglio del km0.</small>
+            </div>
+          </li>
+          <li class="d-flex justify-content-center gap-4">
+            <div>
+              <i class="bx bx-store-alt bi flex-shrink-0 fs-2"></i>
+              <h6 class="mb-0">Solo Produttori locali</h6>
+              <small>Salvaguardiamo le realtà e le tradizioni locali.</small>
+            </div>
+          </li>
+          <hr class="mb-1" />
+          <p class="mb-2">
+            <small style="font-size: x-small"
+              >Ti ringraziamo per averci scelto, speriamo di riuscire a farti
+              conoscere delle meravigliose realtà intorno a casa tua.</small
+            >
+          </p>
+        </ul>
+        <button type="button" class="full-btn" data-bs-dismiss="alert">
+          Inizia a Scoprire!
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>

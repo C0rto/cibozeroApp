@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../helpers/catchAsync');
 const Farm = require('../models/farm');
+const User = require('../models/user');
 const Product = require('../models/products');
 const { isLoggedIn, isOwner, validateFarm } = require('../middleware');
 const multer = require('multer');
@@ -14,6 +15,7 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 // MONGOSE CONNECTION
 const mongoose = require('mongoose');
+const { object } = require('joi');
 // -------------------------------------------------------------------------------
 mongoose.connect('mongodb://localhost:27017/123');
 const db = mongoose.connection;
@@ -71,6 +73,24 @@ router.get(
     res.render('farms/details', { farmFound });
   })
 );
+
+// fav routes
+router.post('/:id', isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(req.user.id);
+  const farm = await Farm.findById(id);
+  const favorites = user.favorites.indexOf(farm.id);
+  if (favorites === -1) {
+    user.favorites.push(farm);
+    req.flash('success', `${farm.name} è stato aggiunto ai preferiti`);
+  } else {
+    user.favorites.splice(favorites, 1);
+    req.flash('success', `${farm.name} è stato rimosso dai preferiti`);
+  }
+  await user.save();
+  console.log(user.favorites);
+  return res.redirect(`/produttori/${id}`);
+});
 //------------------------------------------------- MODIFICA DI UN SINGOLO PRODUTTORE TRAMITE ID ----------------------------------------------------------------------------//
 router.get(
   '/:id/modifica',
@@ -122,8 +142,8 @@ router.post(
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const farm = await Farm.findById(id);
-    const { name, price, category } = req.body;
-    const product = new Product({ name, price, category });
+    const { name, price, category, stock } = req.body;
+    const product = new Product({ name, price, category, stock });
     farm.products.push(product);
     product.farm = farm;
     const { path, filename } = req.file;
@@ -143,14 +163,26 @@ router.delete(
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const farmDeleted = await Farm.findByIdAndDelete(id).populate('products');
-    for (let i = 0; i < farmDeleted.products.length; i++) {
-      await cloudinary.uploader.destroy(farmDeleted.products[i].image.filename);
+    // destroy this Farm in favourites
+    const user = await User.find({ favorites: { $in: id } });
+    if (user) {
+      user.forEach((u) => {
+        const finder = u.favorites.indexOf(farmDeleted.id);
+        const deleted = u.favorites.splice(finder, 1);
+        u.save();
+      });
+      req.flash(
+        'success',
+        'Hai annullato correttamente la tua iscrizione a Cibozero'
+      );
+      return res.redirect('/produttori');
+    } else {
+      req.flash(
+        'success',
+        'Hai annullato correttamente la tua iscrizione a Cibozero'
+      );
+      return res.redirect('/produttori');
     }
-    req.flash(
-      'success',
-      'Hai annullato correttamente la tua iscrizione a Cibozero'
-    );
-    return res.redirect('/produttori');
   })
 );
 

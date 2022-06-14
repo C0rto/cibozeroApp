@@ -23,5 +23,11 @@ module.exports.reviewSchema = Joi.object({
 module.exports.productSchema = Joi.object({
   name: Joi.string().required(),
   price: Joi.number().min(0).required(),
+  stock: Joi.number().min(0).required(),
   description: Joi.string(),
 });
+
+// module.exports.userSchema = Joi.object({
+//   email: Joi.string().email().required(),
+//   city: Joi.string(),
+// });

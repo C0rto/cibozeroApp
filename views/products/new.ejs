@@ -20,40 +20,63 @@
               method="POST"
               enctype="multipart/form-data"
             >
-              <div class="mb-3">
-                <label for="name" class="form-label">Nome</label>
-                <input type="text" class="form-control" name="name" id="name" />
-              </div>
-              <div class="mb-3">
-                <label for="price" class="form-label">Prezzo</label>
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="price"
-                    id="price"
-                  />
-                  <span class="input-group-text">€</span>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="image" class="form-file-label my-2">
-                  Carica Immagine</label
-                >
+              <!-- PRODUCT NAME -->
+              <div class="form-floating mb-3">
                 <input
+                  type="text"
                   class="form-control"
-                  type="file"
-                  name="image"
-                  id="image"
+                  placeholder="Nome Prodotto"
+                  name="name"
+                  id="name"
                 />
+                <label for="name" class="form-label">Nome Prodotto</label>
               </div>
-              <div class="mb-3">
-                <label for="name" class="form-label">Categoria</label>
+              <!-- CATEGORY -->
+              <div class="mb-3 form-floating">
                 <select name="category" class="form-select" id="category">
+                  <option value="null">Scegli la categoria</option>
                   <% for(let cat of categories){ %>
                   <option value="<%= cat %>"><%= cat %></option>
                   <% } %>
                 </select>
+                <label for="name" class="form-label">Categoria</label>
+              </div>
+              <!-- GROUPING PRICE AND STOCK -->
+              <div class="row mb-2">
+                <div class="col-md-6">
+                  <div class="mb-3 form-floating">
+                    <div class="input-group col-md-6"></div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="price"
+                      placeholder="Prezzo"
+                      id="price"
+                    />
+                    <label for="price" class="form-label">Prezzo €/kg</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3 form-floating">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="stock"
+                      placeholder="Quantità"
+                      id="stock"
+                    />
+                    <label for="stock" class="form-label">Quantità</label>
+                  </div>
+                </div>
+              </div>
+              <!-- IMAGE UPLOAD -->
+              <div class="mb-3">
+                <input
+                  class="form-control p-3"
+                  type="file"
+                  name="image"
+                  id="image"
+                />
               </div>
 
               <div class="d-flex justify-content-center my-4">

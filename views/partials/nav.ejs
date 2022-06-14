@@ -1,3 +1,7 @@
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0"
+/>
 <header class="header" id="header">
   <div><%- include('flash') %></div>
   <nav class="nav align-content-center">
@@ -15,13 +19,13 @@
         <div class="nav__item" id="nav-item">
           <a href="/produttori" class="nav__link">
             <i class="bx bx-store nav__icon"></i>
-            <span class="nav__name">I produttori</span>
+            <span class="nav__name">Produttori</span>
           </a>
         </div>
         <div class="nav__item" id="nav-item">
-          <a href="/prodotti" class="nav__link" id="nav-item">
+          <a href="/favorites" class="nav__link" id="nav-item">
             <i class="bx bx-compass nav__icon"></i>
-            <span class="nav__name">Tutto a Km0</span>
+            <span class="nav__name">Preferiti</span>
           </a>
         </div>
         <div class="nav__item mobile__only">
@@ -66,11 +70,17 @@
           <div class="d-flex justify-content-end align-items-center">
             <% if (!currentUser) { %>
             <a href="/login" class="dropdown-item text-success"
-              ><small><b>Accedi</b></small></a
+              ><small class="d-flex align-items-center"
+                ><span class="material-symbols-outlined"> login </span
+                ><b>Accedi</b></small
+              ></a
             >
             <% } else {%>
             <a href="/logout" class="dropdown-item text-danger"
-              ><small><b>Esci</b></small></a
+              ><small class="d-flex align-items-center"
+                ><span class="material-symbols-outlined"> logout </span
+                ><b>Esci</b></small
+              ></a
             >
             <% } %>
           </div>
